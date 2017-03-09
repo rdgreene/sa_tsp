@@ -35,7 +35,7 @@ def epsilonGreedy(epsilon, s, Q, A):
 
 #%% initialise hyper-parameters            
 
-alpha = 0.8; 
+alpha = 0.9; 
 gamma = 0.8; 
 epsilon = 0.2; 
 max_state_transitions = 100 # max iterations
