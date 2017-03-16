@@ -27,6 +27,7 @@ import matplotlib.pyplot as plt
 import random
 from copy import deepcopy
 import seaborn as sns
+from ggplot import *
 
 #%% define functions
 
@@ -46,9 +47,10 @@ def epsilonGreedy(epsilon, s, Q, A):
 
 alpha = 0.8; 
 gamma = 0.8; 
-epsilon = 1; 
+epsilon = 0.8; 
 max_state_transitions = 100 # max iterations
 goal_state_reward = 100
+epochs = 5000
 
 # ans = input("Use default values for alpha(%s), gamma(%s), epsilon(%s), max transitions per epoch (%s), and goal state reward (%s)? [y/n]"\
  # % (alpha, gamma, epsilon, max_state_transitions, goal_state_reward)) #Define Learning Hyper Parameters
@@ -84,7 +86,7 @@ average_cost = []
 
 #%% Start Q-Learning
 
-for i in range(0,20000): 
+for i in range(0,epochs): 
     # re-initialise variables
     R = deepcopy(int_R)  # reset the R matrix
     s = start # initial state
@@ -136,7 +138,7 @@ for i in range(0,20000):
             
     
         #decay epsilon
-        epsilon += -0.0005*epsilon
+        epsilon += -0.0001*epsilon
         	
         # check if agent is doubling back! (old position - saved for record)
         # if s_nxt == s_lst:
@@ -177,30 +179,66 @@ M_score_ave = average(total_cost)
 #plt.plot(total_transitions)
 
 summary_cost = []
-for i in range(0,int(size(total_cost)/10)-1):
+for i in range(0,int(size(total_cost)/10)-1):   # calculates average cost in bins of 10 epochs 
     summary_cost.append(np.mean(total_cost[i:i+10]))
      
 summary_cost_sd = []
-for i in range(0,int(size(total_cost)/10)-1):
-    summary_cost_sd.append(total_cost[i:i+10]) # with s.d.
+for i in range(0,int(size(total_cost)/10)-1):   # calculates average cost in bins of 10 epochs 
+    summary_cost_sd.append(total_cost[i:i+10])  # with s.d.
+
 
 n = 100
 window_ave = []
-for i in range(0,int(size(total_cost))):
+for i in range(1,int(size(total_cost))):    # calculates average cost of previous 50 epochs
     if i<n-1:
         window_ave.append(np.mean(total_cost[0:i]))
     else:
         window_ave.append(np.average(total_cost[i-(n-1):i]))
+     
+n = 100
+window_ave_sd = []
+for i in range(1,int(size(total_cost))):    # calculates average cost of previous 50 epochs
+    if i<n-1:
+        window_ave_sd.append(total_cost[0:n-1])
+    else:
+        window_ave_sd.append(total_cost[i-(n-1):i])
+        
+    
         
 plt.plot(window_ave)
+plt.title('average of last 100')
 plt.show()
-       
-sns.tsplot(np.transpose(summary_cost_sd))
+  
+#sns.tsplot(np.transpose(summary_cost_sd))
+#plt.show()
+
+sns.tsplot(np.transpose(window_ave_sd))
 plt.show()
-plt.plot(average_cost)
-plt.show()
+
 plt.plot(total_cost)
+plt.title('epoch cost')
 plt.show()
+
 plt.plot(summary_cost)
+plt.title('cost binned (size = 10 epochs)')
 plt.ylabel('Epoch Cost')
 plt.show()
+
+x = np.arange(epochs)
+y = average_cost
+plt.plot(x,y)
+plt.title('running average')
+plt.ylabel('Cost')
+plt.xlabel('Epochs')
+plt.xscale('log')
+ax = plt.gca()
+ax.set_axis_bgcolor((1, 1, 1))
+ax.spines['bottom'].set_color('black')
+ax.spines['right'].set_color('black')
+plt.grid(b=True, which='major', color='0.65',linestyle='-')
+plt.show()
+
+
+
+
+
