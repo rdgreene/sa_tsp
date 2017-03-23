@@ -26,8 +26,6 @@ from scipy import *
 import matplotlib.pyplot as plt
 import random
 from copy import deepcopy
-import seaborn as sns
-from ggplot import *
 
 #%% define functions
 
@@ -45,7 +43,7 @@ def epsilonGreedy(epsilon, s, Q, A):
 
 #%% initialise hyper-parameters            
 
-alpha = 0.8; 
+alpha = 0.8; # learning rate 
 gamma = 0.8; 
 epsilon = 0.8; 
 max_state_transitions = 100 # max iterations
@@ -178,13 +176,13 @@ M_score_ave = average(total_cost)
 
 #plt.plot(total_transitions)
 
-summary_cost = []
-for i in range(0,int(size(total_cost)/20)-1):   # calculates average cost in bins of 10 epochs 
-    summary_cost.append(np.mean(total_cost[i:i+20]))
+#summary_cost = []
+#for i in range(1,int(size(total_cost)/20)-1):   # calculates average cost in bins of 10 epochs 
+#    summary_cost.append(np.mean(total_cost[(i-1)*20:(i*20)-1]))
      
-summary_cost_sd = []
-for i in range(0,int(size(total_cost)/10)-1):   # calculates average cost in bins of 10 epochs 
-    summary_cost_sd.append(total_cost[i:i+10])  # with s.d.
+#summary_cost_sd = []
+#for i in range(0,int(size(total_cost)/10)-1):   # calculates average cost in bins of 10 epochs 
+#    summary_cost_sd.append(total_cost[i:i+10])  # with s.d.
 
 
 n = 100
@@ -195,13 +193,13 @@ for i in range(1,int(size(total_cost))):    # calculates average cost of previou
     else:
         window_ave.append(np.average(total_cost[i-(n-1):i]))
      
-n = 100
-window_ave_sd = []
-for i in range(1,int(size(total_cost))):    # calculates average cost of previous 50 epochs
-    if i<n-1:
-        window_ave_sd.append(total_cost[0:n-1])
-    else:
-        window_ave_sd.append(total_cost[i-(n-1):i])
+#n = 100
+#window_ave_sd = []
+#for i in range(1,int(size(total_cost))):    # calculates average cost of previous 50 epochs
+#    if i<n-1:
+#        window_ave_sd.append(total_cost[0:n-1])
+#    else:
+#        window_ave_sd.append(total_cost[i-(n-1):i])
         
     
         
@@ -212,17 +210,17 @@ plt.show()
 #sns.tsplot(np.transpose(summary_cost_sd))
 #plt.show()
 
-sns.tsplot(np.transpose(window_ave_sd))
-plt.show()
+#sns.tsplot(np.transpose(window_ave_sd))
+#plt.show()
 
-plt.plot(total_cost)
-plt.title('epoch cost')
-plt.show()
+#plt.plot(total_cost)
+#plt.title('epoch cost')
+#plt.show()
 
-plt.plot(summary_cost)
-plt.title('cost binned (size = 20 epochs)')
-plt.ylabel('Epoch Cost')
-plt.show()
+#plt.plot(summary_cost)
+#plt.title('cost binned (size = 20 epochs)')
+#plt.ylabel('Epoch Cost')
+#plt.show()
 
 x = np.arange(epochs)
 y = average_cost
@@ -237,6 +235,22 @@ ax.spines['bottom'].set_color('black')
 ax.spines['right'].set_color('black')
 plt.grid(b=True, which='major', color='0.65',linestyle='-')
 plt.show()
+
+# %% 
+######## bokeh experiment ###############
+from bokeh.layouts import gridplot
+from bokeh.plotting import figure, show, output_file
+
+p1 = figure(x_axis_type="continuous", title="Stock Closing Prices")
+p1.grid.grid_line_alpha=0.3
+p1.xaxis.axis_label = 'Epochs'
+p1.yaxis.axis_label = 'Cost'
+p1.line(datetime(MSFT['date']), MSFT['adj_close'], color='#FB9A99', legend='MSFT')
+p1.legend.location = "top_left"
+
+
+
+
 
 
 
