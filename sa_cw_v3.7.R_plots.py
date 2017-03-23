@@ -237,20 +237,65 @@ plt.grid(b=True, which='major', color='0.65',linestyle='-')
 plt.show()
 
 # %% 
-######## bokeh experiment ###############
-from bokeh.layouts import gridplot
-from bokeh.plotting import figure, show, output_file
+######## line graph  ###############
 
-p1 = figure(x_axis_type="continuous", title="Stock Closing Prices")
-p1.grid.grid_line_alpha=0.3
-p1.xaxis.axis_label = 'Epochs'
-p1.yaxis.axis_label = 'Cost'
-p1.line(datetime(MSFT['date']), MSFT['adj_close'], color='#FB9A99', legend='MSFT')
-p1.legend.location = "top_left"
+fig, fig1 = plt.subplots()
+label_font = {'family': 'monospace',
+        'color':  'black',
+        'weight': 500,
+        'size': 16 }
+title_font = {'family': 'monospace',
+        'color':  'black',
+        'weight': 700,
+        'size': 20 }
+fig1.patch.set_facecolor('cornsilk')
+fig1.patch.set_alpha(0.7)
+fig1.set_ylim(107, 148)
+fig1.set_xlim(0, epochs)
+plt.title('Agent Learning', fontdict=title_font)
+plt.ylabel('Cost', fontdict=label_font)
+plt.xlabel('Epochs', fontdict=label_font)
+plt.xticks(fontsize = 13)
+plt.yticks(fontsize = 13)
+plt.grid(b=True, which='major', color='lightgrey', linestyle='-')
 
+running = fig1.plot(average_cost, linestyle = ':', c='blue', linewidth=3, alpha=0.5, label='Running average')
+last100 = fig1.plot(window_ave, linewidth=2, c='forestgreen', label='Average of last 100 epochs')
+baseline = fig1.plot(np.zeros_like(average_cost)+110, dashes=[20, 5], alpha=0.5, c='red', linewidth=3, label='Optimum')
 
+legend = fig1.legend(loc='upper right', shadow=True, fontsize= 12)
+legend.get_frame().set_facecolor('black')
 
+plt.show()
 
+# %% 
+######## path graph dummy example ###############
+
+verts = [(1., 1.),(2., 3.),(4., 3.),(2., 1.),(1., 1.)]
+verts2 = [(1., 1.),(4., 3.),(2., 3.),(2., 1.),(1., 1.)]
+
+fig, mapa = plt.subplots()
+mapa.patch.set_facecolor('wheat')
+mapa.set_ylim(0, 4)
+mapa.set_xlim(0, 5)
+plt.grid(b=True, which='major', color='white', linestyle='-')
+plt.title('Map of Paths', fontdict=title_font)
+plt.ylabel('latitud', fontdict=label_font)
+plt.xlabel('longitud', fontdict=label_font)
+plt.xticks(fontsize = 12)
+plt.yticks(fontsize = 12)
+
+best    = mapa.plot(*zip(*verts), linestyle = '-', c='forestgreen', linewidth=3, alpha=0.9, label='Best path', zorder=2)
+others  = mapa.plot(*zip(*verts2), linestyle = '-', c='goldenrod', linewidth=2, alpha=0.8, label='Oher paths', zorder=1)
+nodes   = mapa.scatter(*zip(*verts2), c='white', s=100, label='white',alpha=1, edgecolors='black', zorder=3)
+
+legend = fig1.legend(loc='upper right', shadow=False, fontsize= 12)
+legend.get_frame().set_facecolor('black')
+
+plt.show()
+
+# %% 
+######## path graph for real ###############
 
 
 
