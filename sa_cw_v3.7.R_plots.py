@@ -81,6 +81,7 @@ total_transitions = [] # records number of steps in each inner loop (i.e. each e
 total_cost = [] # records cost of steps in each inner loop (i.e. each epoch)
 epsilon_decay = []
 average_cost = []
+transition_seqs = [] # records transition sequences taken by agent in each epoch as string values
 
 #%% Start Q-Learning
 
@@ -97,13 +98,14 @@ for i in range(0,epochs):
     
     visited[s] = 0 # start point marked as visited
 
-
+    transition_seqs.append([s]) # append new list to record transition sequence for current epoch with starting node recorded as 1st element
     
     while (goal == False):
         R[0:-1,s] = np.nan        # the agent cannot go back to the same node
         A = np.argwhere(~np.isnan(R[s,:]))
         a = epsilonGreedy(epsilon, s, Q, A)
     
+        transition_seqs[i].append(a)	 # record transition made in current iteration
         	
         #define next state based on chosen action (s_nxt) and possible actions from this state (A_nxt)
         s_nxt = a     # assign chosen action (a) to be the next state the agent enters
