@@ -8,7 +8,7 @@ Created on Thu Mar 23 13:40:00 2017
 Use following to implement in main script:
 
 from loadTSPmatrix import loadTSPmatrix
-file_name = 'filename and directory here'
+file_name = 'tsp_matrices/file_name'
 TPSmatrix = loadTSPmatrix(file_name)
 
 """
