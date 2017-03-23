@@ -138,7 +138,7 @@ for i in range(0,epochs):
             
     
         #decay epsilon
-        epsilon += -0.0001*epsilon
+        epsilon += -0.0005*epsilon
         	
         # check if agent is doubling back! (old position - saved for record)
         # if s_nxt == s_lst:
@@ -179,8 +179,8 @@ M_score_ave = average(total_cost)
 #plt.plot(total_transitions)
 
 summary_cost = []
-for i in range(0,int(size(total_cost)/10)-1):   # calculates average cost in bins of 10 epochs 
-    summary_cost.append(np.mean(total_cost[i:i+10]))
+for i in range(0,int(size(total_cost)/20)-1):   # calculates average cost in bins of 10 epochs 
+    summary_cost.append(np.mean(total_cost[i:i+20]))
      
 summary_cost_sd = []
 for i in range(0,int(size(total_cost)/10)-1):   # calculates average cost in bins of 10 epochs 
@@ -220,7 +220,7 @@ plt.title('epoch cost')
 plt.show()
 
 plt.plot(summary_cost)
-plt.title('cost binned (size = 10 epochs)')
+plt.title('cost binned (size = 20 epochs)')
 plt.ylabel('Epoch Cost')
 plt.show()
 
