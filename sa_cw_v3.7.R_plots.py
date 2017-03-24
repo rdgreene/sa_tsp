@@ -262,11 +262,11 @@ plt.yticks(fontsize = 13)
 plt.grid(b=True, which='major', color='lightgrey', linestyle='-')
 
 running = fig1.plot(average_cost, linestyle = ':', c='blue', linewidth=3, alpha=0.5, label='Running average')
-last100 = fig1.plot(window_ave, linewidth=2, c='forestgreen', label='Average of last 100 epochs')
+last100 = fig1.plot(window_ave, linewidth=2, c='forestgreen', label='Average of 100 epochs')
 baseline = fig1.plot(np.zeros_like(average_cost)+110, dashes=[20, 5], alpha=0.5, c='red', linewidth=3, label='Optimum')
 
-legend = fig1.legend(loc='upper right', shadow=True, fontsize= 12)
-legend.get_frame().set_facecolor('black')
+legend = fig1.legend(loc='upper right', shadow=False, fontsize= 12)
+legend.get_frame().set_facecolor('white')
 
 plt.show()
 
@@ -298,6 +298,32 @@ plt.show()
 
 # %% 
 ######## path graph for real ###############
+import collections
+
+d = collections.OrderedDict()
+for a in np.asarray(transition_seqs):
+    t = tuple(a)
+    if t in d:
+        d[t] += 1
+    else:
+        d[t] = 1
+
+transition_summary = []
+for (key, value) in d.items():
+    transition_summary.append(list(key) + [value])
+    
+#ransition_coordenates = 
+
+temp = np.asarray(transition_summary).T
+temp1 = temp[0:-1,0]
+for x in temp1:
+    x = coordenates(x,:)
+    
+
+np.asarray(x).T.tolist()
+
+
+
 
 
 
