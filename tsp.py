@@ -98,6 +98,7 @@ del trans_seqs, epoch_costs, costs_matrix, mean_costs
 
                 
 #%%  
+
 #------------ Plot line graph ------------------------
 
 from plotdata import plotline
@@ -110,17 +111,13 @@ title = 'Learing Alpha Search'  # title of graph
 plotline(mean_costs_matrix,alphas,n,baseline,title)
 
 
-# %% 
 #------------ Plot routes ----------------------------
 
 from plotdata import plotroutes
 
-
 file_xy = 'tsp_matrices/p01_xy.csv'
 
 plotroutes(seqs,file_xy)
-
-
 
 
 # %% 
