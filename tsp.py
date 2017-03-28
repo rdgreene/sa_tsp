@@ -22,7 +22,7 @@ from qLearn import qLearn
 file_name = 'tsp_matrices/toy_d.csv'
 int_R = loadTSPmatrix(file_name)
 
-epochs = 2000 # init epochs count
+epochs = 1000 # init epochs count
 start = 0 # define start point at row 0
 
 max_iters = 9999 # redundant? Consider removing
@@ -104,76 +104,23 @@ from plotdata import plotline
 
 baseline = 110                  # minimum posible cost
 n = 50                          # calculates average cost of previous epochs (up to 'n' previous epochs)
-alphas = np.array([0.01, 0.03, 0.1, 0.3, 1.0]).astype('float32')
 variable = alphas               # variable to explore
 title = 'Learing Alpha Search'  # title of graph
 
-plotline(mean_costs_matrix,alphas,n,baseline)
+plotline(mean_costs_matrix,alphas,n,baseline,title)
 
 
 # %% 
 #------------ Plot routes ----------------------------
 
-#from plotdata import plotroutes
+from plotdata import plotroutes
 
 
+file_xy = 'tsp_matrices/p01_xy.csv'
 
-# inside function
-# def plotroutes()
+plotroutes(seqs,file_xy)
 
-import collections
 
-nodes_font = {'family': 'fantasy',
-        'color':  'black',
-        'weight': 400,
-        'size': 14 }
-
-d = collections.OrderedDict()
-for a in np.asarray(transition_seqs):
-    t = tuple(a)
-    if t in d:
-        d[t] += 1
-    else:
-        d[t] = 1
-
-transition_summary = []
-for (key, value) in d.items():
-    transition_summary.append(list(key) + [value])
-    
-fig, mapa = plt.subplots()
-mapa.patch.set_facecolor('forestgreen')
-#mapa.set_ylim()
-#mapa.set_xlim()
-plt.grid(b=False)
-plt.title('Map of Paths', y=1.1,fontdict=title_font)
-plt.ylabel('latitud', fontdict=label_font)
-plt.xlabel('longitud', fontdict=label_font)
-plt.xticks([], [])
-plt.yticks([], [])
-
-nodes = np.asarray([coordenates[x,:] for x in temp[0:-1,0]])
-
-cities = mapa.scatter(nodes[:,0],nodes[:,1],    # plot nodes
-                      c='white', s=800, 
-                      label='white',alpha=1, 
-                      edgecolors='black', zorder=3)
-
-temp = np.asarray(transition_summary).T
-
-for i in range(0,size(nodes,0)):    # plot node names
-    plt.text(nodes[i,0], nodes[i,1], str(temp[i,0]),
-             horizontalalignment='center',
-             verticalalignment='center',
-             fontdict=nodes_font)
-            
-for i in range(0,size(temp,1)):     # plot all paths
-    path = np.asarray([coordenates[x,:] for x in temp[0:-1,i]])
-    width = 5*(temp[end+1,i]/max(temp[end+1,:]))
-    plt.plot(path[:,0],path[:,1], 
-             linestyle = '-', c='yellow', 
-             linewidth=width, alpha=0.8, 
-             label='paths', zorder=2)
-plt.show()
 
 
 # %% 
