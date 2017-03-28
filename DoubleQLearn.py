@@ -14,7 +14,7 @@ Need to define:
 
 '''
 
-def qLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_state_reward, max_iters):
+def doubleQLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_state_reward, max_iters):
     
     # import function dependencies
     from copy import deepcopy
