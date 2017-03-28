@@ -97,11 +97,14 @@ del file_name, a, alpha, e, epsilon, g, gamma, d,  epsilon_decay , sampling_run,
 del trans_seqs, epoch_costs, costs_matrix, mean_costs
 
                 
-#%%  
+#%%  Plot Data
 
-#------------ Plot line graph ------------------------
-
+# import dependencies
 from plotdata import plotline
+from plotdata import plotroutes
+from plotdata import heatmap
+
+# Plot line graph ------------------------
 
 baseline = 110                  # minimum posible cost
 n = 50                          # calculates average cost of previous epochs (up to 'n' previous epochs)
@@ -110,39 +113,20 @@ title = 'Learing Alpha Search'  # title of graph
 
 plotline(mean_costs_matrix,alphas,n,baseline,title)
 
-
-#------------ Plot routes ----------------------------
-
-from plotdata import plotroutes
+# Plot routes ----------------------------
 
 file_xy = 'tsp_matrices/p01_xy.csv'
 
 plotroutes(seqs,file_xy)
 
+# HeatMap with interpolation --------------
 
-# %% 
-######## gridmap with interpolation ###############
+a = 'a'                         # string with name of variable in x
+b = 'b'                         # string with nama of variable in y
+np.random.seed(0)               # just for demo
+grid = np.random.rand(8, 8)     # np.array with performance values
 
-
-np.random.seed(0)
-grid = np.random.rand(4, 4)
-grid2 = np.random.rand(4, 4)
-
-
-fig, ax1 = plt.subplots()
-ax1.imshow(grid, interpolation='lanczos', cmap='plasma')
-ax1.set_title('Grid search a vs b', y=1.05)
-plt.xlabel('a')
-plt.ylabel('b')
-
-
-fig, ax2 = plt.subplots()
-ax2.imshow(grid2, interpolation='lanczos', cmap='plasma')
-ax2.set_title('Grid search c vs b', y=1.05)
-plt.xlabel('c')
-plt.ylabel('b')
-
-plt.show()
+heatmap(grid,a,b)               # plot heatmap
 
 
 

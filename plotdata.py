@@ -4,7 +4,32 @@ Created on Tue Mar 28 16:05:31 2017
 
 @author: miguelesteras
 """
-from scipy import size
+
+def heatmap(grid,a,b):
+    
+    # import dependecies
+    import numpy as np
+    from scipy import *
+    import matplotlib.pyplot as plt
+    
+    # define font style for axes and title
+    axis_font = {'color':  'black',         
+                    'weight': 500,
+                    'size': 14 }
+    title_font = {'color':  'black',        
+                'weight': 500,
+                'size': 16 }    
+    
+    plt.imshow(grid, interpolation='lanczos', cmap='plasma')
+    plt.title('Grid search of '+ a +' vs '+ b, y=1.05,fontdict=title_font)
+    plt.ylabel(a, fontdict=axis_font)
+    plt.xlabel(b, fontdict=axis_font)
+    
+    plt.show()
+
+
+
+
 
 def plotroutes(seqs,file_xy):
 
