@@ -6,6 +6,11 @@ Created on Sat Mar 25 17:10:03 2017
 
 """
 
+#%% Select Modules to run
+
+plotting = False
+
+
 #%% Import libraries & functions
 
 # import libraries
@@ -22,18 +27,18 @@ from qLearn import qLearn
 file_name = 'tsp_matrices/toy_d.csv'
 int_R = loadTSPmatrix(file_name)
 
-epochs = 100 # init epochs count
+epochs = 1000 # init epochs count
 start = 0 # define start point at row 0
 
 max_iters = 9999 # redundant? Consider removing
 goal_state_reward = 100
 
-alphas = np.array([0.01, 0.03, 0.1, 0.3, 1.0]).astype('float32')
-gammas = np.array([0.8]).astype('float32')
-epsilons = np.array([0.8]).astype('float32')
-epsilon_decays = np.array([0.003]).astype('float32')
+alphas = np.array([0.3]).astype('float32')
+gammas = np.array([0.3]).astype('float32')
+epsilons = np.array([0.9]).astype('float32')
+epsilon_decays = np.array([0.01]).astype('float32')
 
-sampling_sampling_runs = 2
+sampling_sampling_runs = 100
 
 ''' 
 #   ***Comment in to prompt selection of learning parameters for Q Learning***
@@ -81,9 +86,14 @@ for a in range(0, np.size(alphas)):
                     
                     # calculate mean costs across all 'sampling_runs'
                     mean_costs = np.mean(costs_matrix, 1)
-                  
-                ps_dic[loop_idx] = ('A [%.2f], G [%.2f], E [%.2f], D [%.4f]' % (alpha, gamma, epsilon, epsilon_decay))   
+                 
+                ps_dic[loop_idx] = ('Epsilon Decay = %.2f' % epsilon_decay) 
+                #ps_dic[loop_idx] = ('A [%.2f], G [%.2f], E [%.2f], D [%.4f]' % (alpha, gamma, epsilon, epsilon_decay))   
                 mean_costs_matrix[:, loop_idx] = mean_costs; loop_idx +=1
+
+np.save('ultraParameters', alphas)  
+np.save('ultraResults', mean_costs_matrix)                
+            
 
 #%% Clear Redundant Variables from workspace
 
@@ -94,15 +104,10 @@ del start, epoch, epochs, sampling_sampling_runs, max_iters, goal_state_reward
 del file_name, a, alpha, e, epsilon, g, gamma, d,  epsilon_decay , sampling_run, loop_idx
 
 # clear non-aggregate metrics variables
-del trans_seqs, epoch_costs, costs_matrix, mean_costs, euler_gamma, pi, ps_dic
+del trans_seqs, epoch_costs, costs_matrix, mean_costs, euler_gamma, pi
 
-#%%  Plot Data
 
-# import dependencies
-from plotdata import plotBrokenLines, plotLines, plotRoutes, heatmap
-
-# Plot line graph ------------------------
-
+# %%
 n = 50   # calculates average cost of previous epochs (up to 'n' previous epochs)
 window_ave = np.zeros_like(mean_costs_matrix)
 for k in range(0,int(np.size(mean_costs_matrix,1))):
@@ -111,30 +116,57 @@ for k in range(0,int(np.size(mean_costs_matrix,1))):
             window_ave[i-1,k] = (np.mean(mean_costs_matrix[:,k][0:i]))
         else:
             window_ave[i-1,k] = (np.mean(mean_costs_matrix[:,k][i-(n-1):i]))
+
+
+#%%  Plot Data
+
+plt.figure(figsize=(15,10))
+plt.plot(window_ave)
+plt.legend(ps_dic.values())
+plt.savefig('ultra')
+
+#%%
+
+
+if plotting == True:
+
+    # import dependencies
+    from plotdata import plotBrokenLines, plotLines, plotRoutes, heatmap
     
-baseline = 110                  # minimum posible cost
-variable = alphas               # variable to explore
-title = 'Learing Alpha Search'  # title of graph
-
-plotBrokenLines(window_ave,alphas,baseline,title)
-
-plotLines(window_ave,alphas,baseline,title)
-
-
-# Plot routes ----------------------------
-
-file_xy = 'tsp_matrices/toyd_d_xy.csv'
-
-plotRoutes(seqs,file_xy,alphas)
-
-# HeatMap with interpolation --------------
-
-a = 'a'                         # string with name of variable in x
-b = 'b'                         # string with nama of variable in y
-np.random.seed(0)               # just for demo
-grid = np.random.rand(8, 8)     # np.array with performance values
-
-heatmap(grid,a,b)               # plot heatmap
+    # Plot line graph ------------------------
+    
+    n = 20   # calculates average cost of previous epochs (up to 'n' previous epochs)
+    window_ave = np.zeros_like(mean_costs_matrix)
+    for k in range(0,int(np.size(mean_costs_matrix,1))):
+        for i in range(1,int(np.size(mean_costs_matrix[:,k])+1)):
+            if i<n-1:
+                window_ave[i-1,k] = (np.mean(mean_costs_matrix[:,k][0:i]))
+            else:
+                window_ave[i-1,k] = (np.mean(mean_costs_matrix[:,k][i-(n-1):i]))
+        
+    baseline = 110                  # minimum posible cost
+    variable = alphas               # variable to explore
+    title = 'Learing Alpha Search'  # title of graph
+    
+    plotBrokenLines(window_ave,alphas,baseline,title)
+    
+    plotLines(window_ave,alphas,baseline,title)
+    
+    
+    # Plot routes ----------------------------
+    
+    file_xy = 'tsp_matrices/toyd_d_xy.csv'
+    
+    plotRoutes(seqs,file_xy,alphas)
+    
+    # HeatMap with interpolation --------------
+    
+    a = 'a'                         # string with name of variable in x
+    b = 'b'                         # string with nama of variable in y
+    np.random.seed(0)               # just for demo
+    grid = np.random.rand(8, 8)     # np.array with performance values
+    
+    heatmap(grid,a,b)               # plot heatmap
 
 
 
