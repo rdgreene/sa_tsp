@@ -2,9 +2,9 @@
 """
 Created on Sat Mar 25 16:44:28 2017
 
-@author: rdgre
+@author: miguelesteras and rdgre
 """
-
+# (modified from qLearn code by rdgre)
 '''
 Need to define:
     transition_seqs [x]
@@ -13,7 +13,7 @@ Need to define:
 
 '''
 
-def qLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_state_reward, max_iters):
+def nTDqLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_state_reward, max_iters, n):
     
     # import function dependencies
     from copy import deepcopy
@@ -43,33 +43,33 @@ def qLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_stat
         transition_seqs.append([s]) # append new list to record transition sequence for current epoch with starting node recorded as 1st element
         
         while (goal == False):
-            R[0:-1,s] = np.nan        # the agent cannot go back to the same node
-            A = np.argwhere(~np.isnan(R[s,:]))
-            a = epsilonGreedy(epsilon, s, Q, A)
-        
-            transition_seqs[i].append(a)	 # record transition made in current iteration
-            	
-            #define next state based on chosen action (s_nxt) and possible actions from this state (A_nxt)
-            s_nxt = a     # assign chosen action (a) to be the next state the agent enters
-            A_nxt = np.argwhere(~np.isnan(R[s_nxt,:]))   # create list of available actions from next state (s_nxt)
+            R[0:-1,s] = np.nan                  # the agent cannot go back to the same node
+            
+            for j in range(0,n):
+
+                A[j,:] = np.argwhere(~np.isnan(R[s[-1,0],:]))
+                a[j,0] = epsilonGreedy(epsilon, s[-1,0], Q, A[j,:])
+            
+                transition_seqs[i].append(a[j,0])	    # record transition made in current iteration
+                	
+                #define next state based on chosen action (s) and possible actions from this state (A)
+                s[j+1,0] = a[j,0]                           # assign chosen action (a) to be the next state the agent enters
+                A[j+1,:] = np.argwhere(~np.isnan(R[s[j+1,0],:]))  # create list of available actions from next state (s)
+
             # update Q matrix
             if (sum(visited) < 3):
                 update = Q[s,a] + alpha * ((R[s,a] +  gamma * Q[s_nxt,4]) - Q[s,a]) # calculate update to Q matrix value for current state Q[s,a] given next state (s_nxt)
             else: 
                 update = Q[s,a] + alpha * ((R[s,a] +  gamma * max(Q[s_nxt, A_nxt])[0]) - Q[s,a]) # calculate update to Q matrix value for current state Q[s,a] given next state (s_nxt)
             
-            Q[s,a] = update # update Q matrix value in current state Q[s,a]
-            #cost += R[s,a]
-            	
-            	
-            # move agent to next state (i.e. update s) and keep record previous state (s_lst)
+            Q[s,a] = update # update Q matrix value in current state Q[s,a]            	
             cost += R[s,a] # count cost of state transition associated with action taken in curretn iteration
-            s = s_nxt # the state is updated
-            transitions += 1 # count iterations
+            
+            transitions += n # count iterations
         
             # update visited and goal variables
-            visited[s] = 0 # the current state is marked as visited (RG: move to top of loop (otherwise counting out of sync???))
-            goal = (s == end or transitions == max_iters)  # check if the end point has been reached (RG: what is the effect of having a max iterations in this part of the loop on how Q gets updated?)    
+            visited[s] = 0 # visited states marked as visited (RG: move to top of loop (otherwise counting out of sync???))
+            goal = (s[-1,0] == end or transitions == max_iters)  # check if the end point has been reached (RG: what is the effect of having a max iterations in this part of the loop on how Q gets updated?)    
         
             # ADD: increment operation to count steps
         

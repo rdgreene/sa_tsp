@@ -2,7 +2,7 @@
 """
 Created on Sat Mar 25 16:44:28 2017
 
-@author: miguelesteras 
+@author: miguelesteras and rdgre
 """
 # (modified from qLearn function by rdgre)
 
@@ -126,4 +126,4 @@ def doubleQLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goa
         epoch +=1
         #epsilon_decay.append(epsilon) RG: redundant?
     
-    return total_cost, transition_seqs, Q
+    return total_cost, transition_seqs, Q1, Q2
