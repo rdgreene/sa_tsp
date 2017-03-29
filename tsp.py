@@ -123,7 +123,7 @@ plotLines(window_ave,alphas,baseline,title)
 
 # Plot routes ----------------------------
 
-file_xy = 'tsp_matrices/p01_xy.csv'
+file_xy = 'tsp_matrices/toyd_d_xy.csv'
 
 plotRoutes(seqs,file_xy,alphas)
 
