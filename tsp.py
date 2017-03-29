@@ -22,7 +22,7 @@ from qLearn import qLearn
 file_name = 'tsp_matrices/toy_d.csv'
 int_R = loadTSPmatrix(file_name)
 
-epochs = 1000 # init epochs count
+epochs = 100 # init epochs count
 start = 0 # define start point at row 0
 
 max_iters = 9999 # redundant? Consider removing
@@ -33,7 +33,7 @@ gammas = np.array([0.8]).astype('float32')
 epsilons = np.array([0.8]).astype('float32')
 epsilon_decays = np.array([0.003]).astype('float32')
 
-sampling_sampling_runs = 10
+sampling_sampling_runs = 2
 
 ''' 
 #   ***Comment in to prompt selection of learning parameters for Q Learning***

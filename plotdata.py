@@ -53,7 +53,7 @@ def plotRoutes(seqs,file_xy,variable):
     for i in range(0,np.size(variable)):
         
         # routes examples per value in variable
-        n = np.size(seqs,0)/np.size(variable)
+        n = int(np.size(seqs,0)/np.size(variable))
         # transform sequeces of states to an array
         d = collections.OrderedDict()
         for a in np.asarray(seqs)[i*n:(i*n)+n,:]:
