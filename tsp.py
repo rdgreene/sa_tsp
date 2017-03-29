@@ -88,36 +88,44 @@ for a in range(0, np.size(alphas)):
 #%% Clear Redundant Variables from workspace
 
 # clear input variables
-# del start, epoch, epochs, alphas, epsilons, gammas, epsilon_decays, sampling_sampling_runs, max_iters, goal_state_reward
+del start, epoch, epochs, sampling_sampling_runs, max_iters, goal_state_reward
 
 # clear any variables created solely for 'looping' purposes
 del file_name, a, alpha, e, epsilon, g, gamma, d,  epsilon_decay , sampling_run, loop_idx
 
 # clear non-aggregate metrics variables
-del trans_seqs, epoch_costs, costs_matrix, mean_costs
+del trans_seqs, epoch_costs, costs_matrix, mean_costs, euler_gamma, pi, ps_dic
 
-                
 #%%  Plot Data
 
 # import dependencies
-from plotdata import plotline
-from plotdata import plotroutes
-from plotdata import heatmap
+from plotdata import plotBrokenLines, plotLines, plotRoutes, heatmap
 
 # Plot line graph ------------------------
 
+n = 50   # calculates average cost of previous epochs (up to 'n' previous epochs)
+window_ave = np.zeros_like(mean_costs_matrix)
+for k in range(0,int(np.size(mean_costs_matrix,1))):
+    for i in range(1,int(np.size(mean_costs_matrix[:,k])+1)):
+        if i<n-1:
+            window_ave[i-1,k] = (np.mean(mean_costs_matrix[:,k][0:i]))
+        else:
+            window_ave[i-1,k] = (np.mean(mean_costs_matrix[:,k][i-(n-1):i]))
+    
 baseline = 110                  # minimum posible cost
-n = 50                          # calculates average cost of previous epochs (up to 'n' previous epochs)
 variable = alphas               # variable to explore
 title = 'Learing Alpha Search'  # title of graph
 
-plotline(mean_costs_matrix,alphas,n,baseline,title)
+plotBrokenLines(window_ave,alphas,baseline,title)
+
+plotLines(window_ave,alphas,baseline,title)
+
 
 # Plot routes ----------------------------
 
 file_xy = 'tsp_matrices/p01_xy.csv'
 
-plotroutes(seqs,file_xy)
+plotRoutes(seqs,file_xy,alphas)
 
 # HeatMap with interpolation --------------
 

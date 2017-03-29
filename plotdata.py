@@ -9,7 +9,6 @@ def heatmap(grid,a,b):
     
     # import dependecies
     import numpy as np
-    from scipy import *
     import matplotlib.pyplot as plt
     
     # define font style for axes and title
@@ -31,7 +30,7 @@ def heatmap(grid,a,b):
 
 
 
-def plotroutes(seqs,file_xy):
+def plotRoutes(seqs,file_xy,variable):
 
     # import dependencies
     import collections
@@ -51,10 +50,10 @@ def plotroutes(seqs,file_xy):
                    'weight': 400,
                    'size': 14 }
 
-    for i in range(0,int(size(seqs,0)/(epochs*sampling_sampling_runs))):
+    for i in range(0,np.size(variable)):
         
         # routes examples per value in variable
-        n = epochs*sampling_sampling_runs
+        n = np.size(seqs,0)/np.size(variable)
         # transform sequeces of states to an array
         d = collections.OrderedDict()
         for a in np.asarray(seqs)[i*n:(i*n)+n,:]:
@@ -91,14 +90,14 @@ def plotroutes(seqs,file_xy):
                      edgecolors='black', zorder=3)
         
         # plot names/numbers of states
-        for j in range(0,size(nodes,0)):                        
+        for j in range(0,np.size(nodes,0)):                        
             plt.text(nodes[j,0], nodes[j,1], str(paths[j,0]),
                      horizontalalignment='center',
                      verticalalignment='center',
                      fontdict=nodes_font)
                     
         # plot paths
-        for k in range(0,size(paths,1)):                         
+        for k in range(0,np.size(paths,1)):                         
             path = np.asarray([coordenates[x,:] for x in paths[0:-1,k]])
             width = 5*(paths[-1,k]/max(paths[-1,:]))
             plt.plot(path[:,0],path[:,1], 
@@ -108,7 +107,7 @@ def plotroutes(seqs,file_xy):
     
     
     
-def plotline(mean_costs_matrix,variable,n,baseline,title):
+def plotBrokenLines(matrix,variable,baseline,title):
     
     import matplotlib.gridspec as gridspec
     import numpy as np
@@ -120,26 +119,18 @@ def plotline(mean_costs_matrix,variable,n,baseline,title):
     title_font = {'color':  'black',        # define font for tittle
             'weight': 500,
             'size': 16 }
-    
-    window_ave = np.zeros_like(mean_costs_matrix)
-    for k in range(0,int(size(mean_costs_matrix,1))):
-        for i in range(1,int(size(mean_costs_matrix[:,k])+1)):
-            if i<n-1:
-                window_ave[i-1,k] = (np.mean(mean_costs_matrix[:,k][0:i]))
-            else:
-                window_ave[i-1,k] = (np.mean(mean_costs_matrix[:,k][i-(n-1):i]))
       
     gs = gridspec.GridSpec(6, 3)            # set up graph size
     gs.update(hspace=0.3)                   # gap between graphs
     ax = plt.subplot(gs[:-1, :])            # size top graph
     ax_base = plt.subplot(gs[-1,:])         # size botton graph
-    ax_base.plot(np.zeros_like(window_ave[:,1])+baseline,       # plot optimum performance
+    ax_base.plot(np.zeros_like(matrix[:,1])+baseline,       # plot optimum performance
                                c='tomato', label='baseline')   
-    for i in range(0,int(size(variable))):                      # plot learning data
-        ax.plot(window_ave[:,i], label=str(variable[i]))
+    for i in range(0,int(np.size(variable))):                      # plot learning data
+        ax.plot(matrix[:,i], label=str(variable[i]))
     
     # limit the view of the graphs
-    ax.set_ylim(amin(window_ave)-1, amax(window_ave))
+    ax.set_ylim(np.amin(matrix)-1, np.amax(matrix))
     ax_base.set_ylim(baseline-0.5, baseline+0.5)
     
     # hide the spines between ax and ax_base
@@ -162,6 +153,48 @@ def plotline(mean_costs_matrix,variable,n,baseline,title):
     # Add a grid, axes labels and tittle
     ax.grid(b=True, which='major', color='lightgray', linestyle='-')    # grid on
     ax_base.set_xlabel('Epochs', fontdict=axis_font)                    # x-label
+    ax.set_ylabel('Cost', fontdict=axis_font)                           # y-label
+    ax.set_title(title, y=1.1, fontdict=title_font) # title
+    
+    # Add a legend
+    legend = ax.legend(loc='upper right', shadow=False,fontsize= 10)
+    legend.get_frame().set_facecolor('white')   # legend background
+    legend.get_frame().set_edgecolor('None')    # legend edge color
+    for text in legend.get_texts():             # text in legend
+        plt.setp(text)
+    plt.show() 
+
+
+def plotLines(matrix,variable,baseline,title):
+    
+    import matplotlib.gridspec as gridspec
+    import numpy as np
+    import matplotlib.pyplot as plt
+
+    axis_font = {'color':  'black',         # define font for axis labels
+            'weight': 500,
+            'size': 14 }
+    title_font = {'color':  'black',        # define font for tittle
+            'weight': 500,
+            'size': 16 }
+    fig = plt.figure()
+    ax = plt.subplot2grid((5, 3), (0, 0), colspan=3, rowspan=5)  # size graph
+    
+    for i in range(0,int(np.size(variable))):          # plot learning data
+        ax.plot(matrix[:,i], label=str(variable[i]))
+    
+    ax.plot(np.zeros_like(matrix[:,1])+baseline,       # plot optimum performance
+                          c='tomato', label='baseline')   
+    
+    # limit the view of the graphs
+    ax.set_ylim(baseline-1, np.amax(matrix))
+    
+    # hide the spines between ax and ax_base
+    # ax_base.yaxis.set_ticks(np.arange(baseline-1, baseline+1, 1))
+    
+    # Add a grid, axes labels and tittle
+    ax.grid(b=True, which='major', color='lightgray', linestyle='-')    # grid on
+    ax.set_xlabel('Epochs', fontdict=axis_font)                         # x-label
     ax.set_ylabel('Cost', fontdict=axis_font)                           # y-label
     ax.set_title(title, y=1.1, fontdict=title_font) # title
     
