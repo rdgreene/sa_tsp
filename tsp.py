@@ -10,6 +10,7 @@ Created on Sat Mar 25 17:10:03 2017
 
 # import libraries
 import numpy as np
+from scipy import *
 import matplotlib.pyplot as plt
 
 # import functions
@@ -21,7 +22,7 @@ from qLearn import qLearn
 file_name = 'tsp_matrices/toy_d.csv'
 int_R = loadTSPmatrix(file_name)
 
-epochs = 100 # init epochs count
+epochs = 1000 # init epochs count
 start = 0 # define start point at row 0
 
 max_iters = 9999 # redundant? Consider removing
@@ -87,23 +88,53 @@ for a in range(0, np.size(alphas)):
 #%% Clear Redundant Variables from workspace
 
 # clear input variables
-del start, epoch, epochs, alphas, epsilons, gammas, epsilon_decays, sampling_sampling_runs, max_iters, goal_state_reward
+del start, epoch, epochs, sampling_sampling_runs, max_iters, goal_state_reward
 
 # clear any variables created solely for 'looping' purposes
 del file_name, a, alpha, e, epsilon, g, gamma, d,  epsilon_decay , sampling_run, loop_idx
 
 # clear non-aggregate metrics variables
-del trans_seqs, epoch_costs, costs_matrix, mean_costs
+del trans_seqs, epoch_costs, costs_matrix, mean_costs, euler_gamma, pi, ps_dic
 
-                
-#%% Plot results
+#%%  Plot Data
+
+# import dependencies
+from plotdata import plotBrokenLines, plotLines, plotRoutes, heatmap
+
+# Plot line graph ------------------------
+
+n = 50   # calculates average cost of previous epochs (up to 'n' previous epochs)
+window_ave = np.zeros_like(mean_costs_matrix)
+for k in range(0,int(np.size(mean_costs_matrix,1))):
+    for i in range(1,int(np.size(mean_costs_matrix[:,k])+1)):
+        if i<n-1:
+            window_ave[i-1,k] = (np.mean(mean_costs_matrix[:,k][0:i]))
+        else:
+            window_ave[i-1,k] = (np.mean(mean_costs_matrix[:,k][i-(n-1):i]))
     
-# plot mean costs
-plt.figure(figsize=(15,6)) # set figure size
-plt.plot(mean_costs_matrix)
-plt.legend(ps_dic.values())
-#plt.savefig('alphas.png') # save to drive
-plt.show()
+baseline = 110                  # minimum posible cost
+variable = alphas               # variable to explore
+title = 'Learing Alpha Search'  # title of graph
+
+plotBrokenLines(window_ave,alphas,baseline,title)
+
+plotLines(window_ave,alphas,baseline,title)
+
+
+# Plot routes ----------------------------
+
+file_xy = 'tsp_matrices/p01_xy.csv'
+
+plotRoutes(seqs,file_xy,alphas)
+
+# HeatMap with interpolation --------------
+
+a = 'a'                         # string with name of variable in x
+b = 'b'                         # string with nama of variable in y
+np.random.seed(0)               # just for demo
+grid = np.random.rand(8, 8)     # np.array with performance values
+
+heatmap(grid,a,b)               # plot heatmap
 
 
 
