@@ -68,12 +68,15 @@ def plotRoutes(seqs,file_xy,variable):
             transition_summary.append(list(key) + [value])
         
         paths = np.asarray(transition_summary).T
+        idx = np.argsort(paths[-1,:])       # idx = index of ordered (min->max) path iterations 
+        paths = paths[:,np.flipud(idx)]     # order paths according to iterations (max->min)  
         
-        # Plot routes and nodes
+        # load coordenates for nodes/locations
+        coordenates = loadCoordenates(file_xy)   
+        
+        # Graph configurations
         fig, mapa = plt.subplots()
-        mapa.patch.set_facecolor('forestgreen')
-        #mapa.set_ylim()
-        #mapa.set_xlim()
+        mapa.patch.set_facecolor('whitesmoke')
         plt.grid(b=False)
         plt.title(str(variable[i]), y=1.05,fontdict=title_font)
         plt.ylabel('latitud', fontdict=axis_font)
@@ -81,8 +84,26 @@ def plotRoutes(seqs,file_xy,variable):
         plt.xticks([], [])
         plt.yticks([], [])
                 
-        # load coordenates of states and plot states/cities
-        coordenates = loadCoordenates(file_xy)      
+        # plot preferred path
+        path = np.asarray([coordenates[x,:] for x in paths[0:-1,0]])
+        plt.plot(path[:,0],path[:,1], linestyle = '-', c='orange', 
+                 linewidth=8, alpha=0.8, zorder=2, label='best path ' + np.array_str(paths[0:-1,0]))
+        # plot other paths
+        for k in range(1,np.size(paths,1)):                         
+            path = np.asarray([coordenates[x,:] for x in paths[0:-1,k]])
+            width = 8*(paths[-1,k]/max(paths[-1,:]))
+            plt.plot(path[:,0],path[:,1], linestyle = '-', c='gray', 
+                     linewidth=width, alpha=0.8, zorder=2, label ='other path ' + np.array_str(paths[0:-1,k]))
+        
+       # Add a legend
+        legend = plt.legend(bbox_to_anchor=(1, 1), loc='upper left', shadow=False,fontsize= 10)
+        legend.get_frame().set_facecolor('white')   # legend background
+        legend.get_frame().set_edgecolor('black')    # legend edge color
+        legtext = legend.get_texts()
+        for text in legtext[0:-4]:             # text in legend
+            plt.setp(text)
+        
+        # plot states/cities
         mapa.scatter(coordenates[0:-1,0],coordenates[0:-1,1],
                      c='white', s=800, 
                      label='white',alpha=1, 
@@ -94,14 +115,7 @@ def plotRoutes(seqs,file_xy,variable):
                      horizontalalignment='center',
                      verticalalignment='center',
                      fontdict=nodes_font)
-                    
-        # plot paths
-        for k in range(0,np.size(paths,1)):                         
-            path = np.asarray([coordenates[x,:] for x in paths[0:-1,k]])
-            width = 5*(paths[-1,k]/max(paths[-1,:]))
-            plt.plot(path[:,0],path[:,1], 
-                     linestyle = '-', c='yellow', 
-                     linewidth=width, alpha=0.8, zorder=2)
+        
         plt.show()                      
     
     
@@ -119,7 +133,7 @@ def plotBrokenLines(matrix,variable,baseline,title):
             'weight': 500,
             'size': 16 }
       
-    gs = gridspec.GridSpec(6, 3)            # set up graph size
+    gs = gridspec.GridSpec(12, 6)           # set up graph size
     gs.update(hspace=0.3)                   # gap between graphs
     ax = plt.subplot(gs[:-1, :])            # size top graph
     ax_base = plt.subplot(gs[-1,:])         # size botton graph
@@ -156,11 +170,16 @@ def plotBrokenLines(matrix,variable,baseline,title):
     ax.set_title(title, y=1.1, fontdict=title_font) # title
     
     # Add a legend
-    legend = ax.legend(loc='upper right', shadow=False,fontsize= 10)
+    legend = ax.legend(loc='upper right', shadow=False,fontsize= 14)
     legend.get_frame().set_facecolor('white')   # legend background
-    legend.get_frame().set_edgecolor('None')    # legend edge color
+    legend.get_frame().set_edgecolor('gray')    # legend edge color
     for text in legend.get_texts():             # text in legend
         plt.setp(text)
+    
+    # set the linewidth of each legend object
+    for legobj in legend.legendHandles:
+        legobj.set_linewidth(4)
+    
     plt.show() 
 
 
@@ -176,31 +195,33 @@ def plotLines(matrix,variable,baseline,title):
     title_font = {'color':  'black',        # define font for tittle
             'weight': 500,
             'size': 16 }
-    fig = plt.figure()
-    ax = plt.subplot2grid((5, 3), (0, 0), colspan=3, rowspan=5)  # size graph
+    
+    plt.figure( figsize=(15, 10))
     
     for i in range(0,int(np.size(variable))):          # plot learning data
-        ax.plot(matrix[:,i], label=str(variable[i]))
+        plt.plot(matrix[:,i], label=str(variable[i]))
     
-    ax.plot(np.zeros_like(matrix[:,0])+baseline,       # plot optimum performance
+    plt.plot(np.zeros_like(matrix[:,0])+baseline,       # plot optimum performance
                           c='tomato', label='baseline')   
     
     # limit the view of the graphs
-    ax.set_ylim(baseline-1, np.amax(matrix))
-    
-    # hide the spines between ax and ax_base
-    # ax_base.yaxis.set_ticks(np.arange(baseline-1, baseline+1, 1))
+    plt.ylim(baseline-1, np.amax(matrix))
     
     # Add a grid, axes labels and tittle
-    ax.grid(b=True, which='major', color='lightgray', linestyle='-')    # grid on
-    ax.set_xlabel('Epochs', fontdict=axis_font)                         # x-label
-    ax.set_ylabel('Cost', fontdict=axis_font)                           # y-label
-    ax.set_title(title, y=1.1, fontdict=title_font) # title
+    plt.grid(b=True, which='major', color='lightgray', linestyle='-')    # grid on
+    plt.xlabel('Epochs', fontdict=axis_font)                         # x-label
+    plt.ylabel('Cost', fontdict=axis_font)                           # y-label
+    plt.suptitle(title, y=1.1, fontdict=title_font) # title
     
     # Add a legend
-    legend = ax.legend(loc='upper right', shadow=False,fontsize= 10)
-    legend.get_frame().set_facecolor('white')   # legend background
-    legend.get_frame().set_edgecolor('None')    # legend edge color
+    legend = plt.legend(loc='upper right', shadow=False,fontsize= 16)
+    legend.get_frame().set_facecolor('whitesmoke')   # legend background
+    legend.get_frame().set_edgecolor('lightgray')    # legend edge color
     for text in legend.get_texts():             # text in legend
         plt.setp(text)
+    
+    # set the linewidth of each legend object
+    for legobj in legend.legendHandles:
+        legobj.set_linewidth(5)
+    
     plt.show()                                

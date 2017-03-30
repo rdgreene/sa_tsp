@@ -146,9 +146,9 @@ if plotting == True:
             else:
                 window_ave[i-1,k] = (np.mean(mean_costs_matrix[:,k][i-(n-1):i]))
         
-    baseline = 110                  # minimum posible cost
+    baseline = 120                  # minimum posible cost
     variable = alphas               # variable to explore
-    title = 'Learing Alpha Search'  # title of graph
+    title = 'Learning Alpha Search'  # title of graph
     
     plotBrokenLines(window_ave,alphas,baseline,title)
     
