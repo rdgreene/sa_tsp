@@ -83,15 +83,14 @@ def plotRoutes(seqs,file_xy,variable):
                 
         # load coordenates of states and plot states/cities
         coordenates = loadCoordenates(file_xy)      
-        nodes = np.asarray([coordenates[x,:] for x in paths[0:-1,0]])
-        mapa.scatter(nodes[:,0],nodes[:,1],
+        mapa.scatter(coordenates[:,0],coordenates[:,1],
                      c='white', s=800, 
                      label='white',alpha=1, 
                      edgecolors='black', zorder=3)
         
         # plot names/numbers of states
-        for j in range(0,np.size(nodes,0)):                        
-            plt.text(nodes[j,0], nodes[j,1], str(paths[j,0]),
+        for j in range(0,np.size(coordenates,0)):                        
+            plt.text(coordenates[j,0], coordenates[j,1], str(j),
                      horizontalalignment='center',
                      verticalalignment='center',
                      fontdict=nodes_font)
@@ -124,7 +123,7 @@ def plotBrokenLines(matrix,variable,baseline,title):
     gs.update(hspace=0.3)                   # gap between graphs
     ax = plt.subplot(gs[:-1, :])            # size top graph
     ax_base = plt.subplot(gs[-1,:])         # size botton graph
-    ax_base.plot(np.zeros_like(matrix[:,1])+baseline,       # plot optimum performance
+    ax_base.plot(np.zeros_like(matrix[:,0])+baseline,       # plot optimum performance
                                c='tomato', label='baseline')   
     for i in range(0,int(np.size(variable))):                      # plot learning data
         ax.plot(matrix[:,i], label=str(variable[i]))
@@ -183,7 +182,7 @@ def plotLines(matrix,variable,baseline,title):
     for i in range(0,int(np.size(variable))):          # plot learning data
         ax.plot(matrix[:,i], label=str(variable[i]))
     
-    ax.plot(np.zeros_like(matrix[:,1])+baseline,       # plot optimum performance
+    ax.plot(np.zeros_like(matrix[:,0])+baseline,       # plot optimum performance
                           c='tomato', label='baseline')   
     
     # limit the view of the graphs

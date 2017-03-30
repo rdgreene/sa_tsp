@@ -22,18 +22,18 @@ from qLearn import qLearn
 file_name = 'tsp_matrices/toy_d.csv'
 int_R = loadTSPmatrix(file_name)
 
-epochs = 100 # init epochs count
+epochs = 1000 # init epochs count
 start = 0 # define start point at row 0
 
 max_iters = 9999 # redundant? Consider removing
 goal_state_reward = 100
 
-alphas = np.array([0.01, 0.03, 0.1, 0.3, 1.0]).astype('float32')
+alphas = np.array([0.01]).astype('float32')
 gammas = np.array([0.8]).astype('float32')
 epsilons = np.array([0.8]).astype('float32')
 epsilon_decays = np.array([0.003]).astype('float32')
 
-sampling_sampling_runs = 2
+sampling_sampling_runs = 4
 
 ''' 
 #   ***Comment in to prompt selection of learning parameters for Q Learning***
@@ -117,7 +117,6 @@ variable = alphas               # variable to explore
 title = 'Learing Alpha Search'  # title of graph
 
 plotBrokenLines(window_ave,alphas,baseline,title)
-
 plotLines(window_ave,alphas,baseline,title)
 
 
