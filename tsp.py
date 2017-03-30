@@ -8,7 +8,7 @@ Created on Sat Mar 25 17:10:03 2017
 
 #%% Select Modules to run
 
-plotting = False
+plotting = True
 
 
 #%% Import libraries & functions
@@ -38,7 +38,7 @@ gammas = np.array([0.3]).astype('float32')
 epsilons = np.array([0.9]).astype('float32')
 epsilon_decays = np.array([0.01]).astype('float32')
 
-sampling_sampling_runs = 100
+sampling_sampling_runs = 50
 
 ''' 
 #   ***Comment in to prompt selection of learning parameters for Q Learning***
@@ -107,8 +107,9 @@ del file_name, a, alpha, e, epsilon, g, gamma, d,  epsilon_decay , sampling_run,
 del trans_seqs, epoch_costs, costs_matrix, mean_costs, euler_gamma, pi
 
 
-# %%
-n = 50   # calculates average cost of previous epochs (up to 'n' previous epochs)
+# %% Calculates average cost of previous epochs (up to 'n' previous epochs)
+
+n = 50
 window_ave = np.zeros_like(mean_costs_matrix)
 for k in range(0,int(np.size(mean_costs_matrix,1))):
     for i in range(1,int(np.size(mean_costs_matrix[:,k])+1)):
@@ -120,10 +121,11 @@ for k in range(0,int(np.size(mean_costs_matrix,1))):
 
 #%%  Plot Data
 
-plt.figure(figsize=(15,10))
-plt.plot(window_ave)
-plt.legend(ps_dic.values())
-plt.savefig('ultra')
+if plotting == False:
+    plt.figure(figsize=(15,10))
+    plt.plot(window_ave)
+    plt.legend(ps_dic.values())
+    plt.savefig('ultra')
 
 #%%
 

@@ -83,13 +83,13 @@ def plotRoutes(seqs,file_xy,variable):
                 
         # load coordenates of states and plot states/cities
         coordenates = loadCoordenates(file_xy)      
-        mapa.scatter(coordenates[:,0],coordenates[:,1],
+        mapa.scatter(coordenates[0:-1,0],coordenates[0:-1,1],
                      c='white', s=800, 
                      label='white',alpha=1, 
                      edgecolors='black', zorder=3)
         
         # plot names/numbers of states
-        for j in range(0,np.size(coordenates,0)):                        
+        for j in range(0,np.size(coordenates,0)-1):                        
             plt.text(coordenates[j,0], coordenates[j,1], str(j),
                      horizontalalignment='center',
                      verticalalignment='center',
