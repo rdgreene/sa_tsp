@@ -87,7 +87,7 @@ epsilons = [1.0]
 epsilon_decays = [0.003]
 
 start = 0
-epochs = 5000 # init epochs count
+epochs = 1000 # init epochs count
 goal_reward = 100
 sampling_runs = 50
 
@@ -117,7 +117,7 @@ epsilons = [1.0]
 epsilon_decays = [0.00001, 0.00005, 0.0001, 0.0005, 0.001, 0.005, 0.01]
 
 start = 0
-epochs = 5000 # init epochs count
+epochs = 10000 # init epochs count
 goal_reward = 100
 sampling_runs = 50
 
