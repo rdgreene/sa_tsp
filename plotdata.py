@@ -228,14 +228,16 @@ def plotLines(matrix,variable,baseline,title):
     
     plt.show()
 
-def diagnosticsPlot(plotData, legendData, title): 
-    
-    
+def diagnosticsPlot(plotData, legendData, title, saveFile): 
     
     plt.figure(figsize=(12,8))
     plt.plot(plotData)
-    plt.title(title, fontsize = 20, style = 'normal', fontname = 'cambria')
+    plt.title(title[0], fontsize = 20, style = 'normal', fontname = 'cambria')
     plt.xlabel('Epochs', fontsize = 17, style = 'italic', fontname = 'cambria')
     plt.ylabel('Cost Difference vs Optimal Tour', fontsize = 17, style = 'italic', fontname = 'cambria')
     plt.legend(legendData.values())
-    plt.grid()                                
+    plt.grid()        
+
+    if saveFile == True:
+        plt.savefig(title[1])
+                         
