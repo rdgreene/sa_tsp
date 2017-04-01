@@ -200,7 +200,7 @@ def testParameters(alphas, gammas, epsilons, epsilon_decays,  sampling_runs, epo
                         # calculate mean costs across all 'sampling_runs'
                         mean_costs = np.mean(costs_matrix, 1)
                      
-                    ps_dic[loop_idx] = ('A:%.4f G:%.4f E:%.4f D:%.4f' % (alpha, gamma, epsilon, epsilon_decay)) 
+                    ps_dic[loop_idx] = (r'$\alpha = %.4f$, $\gamma = %.4f$, $\epsilon = %.4f$, $\lambda = %.4f$' % (alpha, gamma, epsilon, epsilon_decay)) 
                     #ps_dic[loop_idx] = ('A [%.2f], G [%.2f], E [%.2f], D [%.4f]' % (alpha, gamma, epsilon, epsilon_decay))   
                     mean_costs_matrix[:, loop_idx] = mean_costs; loop_idx +=1
                     

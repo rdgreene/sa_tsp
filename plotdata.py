@@ -5,6 +5,8 @@ Created on Tue Mar 28 16:05:31 2017
 @author: miguelesteras
 """
 
+import matplotlib.pyplot as plt
+
 def heatmap(grid,a,b):
     
     # import dependecies
@@ -224,4 +226,16 @@ def plotLines(matrix,variable,baseline,title):
     for legobj in legend.legendHandles:
         legobj.set_linewidth(5)
     
-    plt.show()                                
+    plt.show()
+
+def diagnosticsPlot(plotData, legendData, title): 
+    
+    
+    
+    plt.figure(figsize=(12,8))
+    plt.plot(plotData)
+    plt.title(title, fontsize = 20, style = 'normal', fontname = 'cambria')
+    plt.xlabel('Epochs', fontsize = 17, style = 'italic', fontname = 'cambria')
+    plt.ylabel('Cost Difference vs Optimal Tour', fontsize = 17, style = 'italic', fontname = 'cambria')
+    plt.legend(legendData.values())
+    plt.grid()                                

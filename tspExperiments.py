@@ -12,7 +12,8 @@ Created on Sat Mar 25 17:10:03 2017
 import numpy as np
 import matplotlib.pyplot as plt
 from tspFunctions import *
-from plotdata import plotBrokenLines, plotLines, plotRoutes, heatmap
+from plotdata import *
+import pickle
 
 #%% Load problem and define parameters
 
@@ -27,9 +28,9 @@ epsilons = [1.0]
 epsilon_decays = [0.0005]
 
 start = 0
-epochs =5000 # init epochs count
+epochs = 1000 # init epochs count
 goal_reward = 100
-sampling_runs = 50
+sampling_runs = 1
 
 title = 'Experiment 1'
 
@@ -46,8 +47,8 @@ plt.title(title)
 plt.savefig(title)
 
 # save results
-np.save('exp1_results', mean_costs_matrix)
-np.save('exp1_parameters', parameter_records)        
+#np.save('exp1_results', mean_costs_matrix)
+#np.save('exp1_parameters', parameter_records)        
 
 #%% Q-Learning Experiment 2: Vary Learning Rate (Alpha)
 
