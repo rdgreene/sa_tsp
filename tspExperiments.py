@@ -24,20 +24,20 @@ int_R = loadTSPmatrix(file_name)
 alphas = [0.7]
 gammas = [0.8]
 epsilons = [1.0]
-epsilon_decays = [0.003]
+epsilon_decays = [0.0005]
 
 start = 0
-epochs = 1000 # init epochs count
+epochs =5000 # init epochs count
 goal_reward = 100
 sampling_runs = 50
 
-title = 'Experiment 1 Default Parameters'
+title = 'Experiment 1'
 
 # run Q-Learning with specified parameters
 mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
 
 # plot results
-window_ave = getWindowAverage(mean_costs_matrix, 20)
+window_ave = getWindowAverage(mean_costs_matrix, 50)
 #plotLines(window_ave,alphas, 120, title, True)
 plt.figure(figsize=(12,8))
 plt.plot(window_ave)
@@ -51,17 +51,17 @@ np.save('exp1_parameters', parameter_records)
 
 #%% Q-Learning Experiment 2: Vary Learning Rate (Alpha)
 
-alphas = [0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1.0]
+alphas = [0.001, 0.01, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0]
 gammas = [0.8]
 epsilons = [1.0]
-epsilon_decays = [0.003]
+epsilon_decays = [0.0005]
 
 start = 0
 epochs = 5000 # init epochs count
 goal_reward = 100
-sampling_runs = 50
+sampling_runs = 100
 
-title = 'Experiment 2 Vary Learning Rate'
+title = 'Experiment 2'
 
 # run Q-Learning with specified parameters
 mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
@@ -82,16 +82,16 @@ np.save('exp2_parameters', parameter_records)
 #%% Q-Learning Experiment 3: Vary Gamma
 
 alphas = [0.7]
-gammas = [0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1.0]
+gammas = [0.001, 0.01, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0]
 epsilons = [1.0]
-epsilon_decays = [0.003]
+epsilon_decays = [0.0005]
 
 start = 0
-epochs = 1000 # init epochs count
+epochs = 5000 # init epochs count
 goal_reward = 100
 sampling_runs = 50
 
-title = 'Experiment 3 Vary Gamma'
+title = 'Experiment 3'
 
 # run Q-Learning with specified parameters
 mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
@@ -109,7 +109,7 @@ plt.savefig(title)
 np.save('exp3_results', mean_costs_matrix)
 np.save('exp3_parameters', parameter_records)
 
-#%% Q-Learning Experiment 3: Vary Epsilon Decay
+#%% Q-Learning Experiment 4: Vary Epsilon Decay
 
 alphas = [0.7]
 gammas = [0.8]
@@ -121,13 +121,13 @@ epochs = 10000 # init epochs count
 goal_reward = 100
 sampling_runs = 50
 
-title = 'Experiment 4 Vary Epsilon Decay'
+title = 'Experiment 4'
 
 # run Q-Learning with specified parameters
 mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
 
 # plot results
-window_ave = getWindowAverage(mean_costs_matrix, 20)
+window_ave = getWindowAverage(mean_costs_matrix, 50)
 #plotLines(window_ave, alphas, 120, title, True)
 plt.figure(figsize=(12,8))
 plt.plot(window_ave)
