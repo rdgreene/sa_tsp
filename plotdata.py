@@ -32,7 +32,7 @@ def heatmap(grid,a,b):
 
 
 
-def plotRoutes(seqs,file_xy,variable):
+def plotFewRoutes(seqs,file_xy,variable):
 
     # import dependencies
     import collections
@@ -120,6 +120,97 @@ def plotRoutes(seqs,file_xy,variable):
         
         plt.show()                      
     
+
+
+
+def plotManyRoutes(seqs,file_xy,variable):
+
+    # import dependencies
+    import collections
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from loadCoordenates import loadCoordenates
+
+
+    axis_font   = {'color':  'black',        # define font for axis labels
+                   'weight': 500,
+                   'size': 18 }
+    title_font  = {'color':  'black',        # define font for tittle
+                   'weight': 500,
+                   'size': 22 }
+    nodes_font  = {'family': 'fantasy',      # define font for nodes labels
+                   'color':  'black',
+                   'weight': 400,
+                   'size': 12 }
+
+    for i in range(0,np.size(variable)):
+        
+        # routes examples per value in variable
+        n = int(np.size(seqs,0)/np.size(variable))
+        # transform sequeces of states to an array
+        d = collections.OrderedDict()
+        for a in np.asarray(seqs)[i*n:(i*n)+n,:]:
+            t = tuple(a)
+            if t in d:
+                d[t] += 1
+            else:
+                d[t] = 1
+        
+        transition_summary = []
+        for (key, value) in d.items():
+            transition_summary.append(list(key) + [value])
+        
+        paths = np.asarray(transition_summary).T
+        idx = np.argsort(paths[-1,:])       # idx = index of ordered (min->max) path iterations 
+        paths = paths[:,np.flipud(idx)]     # order paths according to iterations (max->min)  
+        
+        # load coordenates for nodes/locations
+        coordenates = loadCoordenates(file_xy)   
+        
+        # Graph configurations
+        plt.figure(figsize=(20, 20), facecolor='whitesmoke')
+        plt.grid(b=False)
+        plt.title(str(variable[i]), y=1.05,fontdict=title_font)
+        plt.ylabel('latitud', fontdict=axis_font)
+        plt.xlabel('longitud', fontdict=axis_font)
+        plt.xticks([], [])
+        plt.yticks([], [])
+                
+       # plot other paths
+        for k in range(1,np.size(paths,1)):                         
+            path = np.asarray([coordenates[x,:] for x in paths[0:-1,k]])
+            width = 8*(paths[-1,k]/max(paths[-1,:]))
+            plt.plot(path[:,0],path[:,1], linestyle = '-', c='gray', 
+                     linewidth=width, alpha=0.2, zorder=2, label ='other path ' + np.array_str(paths[0:-1,k]))
+       # plot preferred path
+        path = np.asarray([coordenates[x,:] for x in paths[0:-1,0]])
+        plt.plot(path[:,0],path[:,1], linestyle = '-', c='orange', 
+                 linewidth=8, alpha=0.8, zorder=2, label='best path ' + np.array_str(paths[0:-1,0]))
+         
+       # Add a legend
+        legend = plt.legend(bbox_to_anchor=(1, 1), loc='upper left', shadow=False,fontsize= 10)
+        legend.get_frame().set_facecolor('white')   # legend background
+        legend.get_frame().set_edgecolor('black')    # legend edge color
+        legtext = legend.get_texts()
+        for text in legtext[0:-4]:             # text in legend
+            plt.setp(text)
+        
+        # plot states/cities
+        mapa.scatter(coordenates[0:-1,0],coordenates[0:-1,1],
+                     c='white', s=800, 
+                     label='white',alpha=1, 
+                     edgecolors='black', zorder=3)
+        
+        # plot names/numbers of states
+        for j in range(0,np.size(coordenates,0)-1):                        
+            plt.text(coordenates[j,0], coordenates[j,1], str(j),
+                     horizontalalignment='center',
+                     verticalalignment='center',
+                     fontdict=nodes_font)
+        
+        plt.show()                      
+    
+    
     
     
 def plotBrokenLines(matrix,variable,baseline,title):
@@ -146,7 +237,7 @@ def plotBrokenLines(matrix,variable,baseline,title):
     
     # limit the view of the graphs
     ax.set_ylim(np.amin(matrix)-1, np.amax(matrix))
-    ax_base.set_ylim(baseline-0.5, baseline+0.5)
+    ax_base.set_ylim(baseline-(baseline/500), baseline+(baseline/500))
     
     # hide the spines between ax and ax_base
     ax.spines['bottom'].set_visible(False)
@@ -193,10 +284,10 @@ def plotLines(matrix,variable,baseline,title):
 
     axis_font = {'color':  'black',         # define font for axis labels
             'weight': 500,
-            'size': 14 }
+            'size': 16 }
     title_font = {'color':  'black',        # define font for tittle
             'weight': 500,
-            'size': 16 }
+            'size': 20 }
     
     plt.figure( figsize=(15, 10))
     
@@ -207,13 +298,13 @@ def plotLines(matrix,variable,baseline,title):
                           c='tomato', label='baseline')   
     
     # limit the view of the graphs
-    plt.ylim(baseline-1, np.amax(matrix))
-    
+    plt.ylim(baseline-(baseline/100), np.amax(matrix))
+
     # Add a grid, axes labels and tittle
     plt.grid(b=True, which='major', color='lightgray', linestyle='-')    # grid on
     plt.xlabel('Epochs', fontdict=axis_font)                         # x-label
     plt.ylabel('Cost', fontdict=axis_font)                           # y-label
-    plt.suptitle(title, y=1.1, fontdict=title_font) # title
+    plt.suptitle(title, y=1, fontdict=title_font) # title
     
     # Add a legend
     legend = plt.legend(loc='upper right', shadow=False,fontsize= 16)

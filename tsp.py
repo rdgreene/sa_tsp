@@ -24,10 +24,10 @@ from qLearn import qLearn
 
 #%% Load problem and define parameters
 
-file_name = 'tsp_matrices/toy_d.csv'
+file_name = 'tsp_matrices/att48_d.csv'
 int_R = loadTSPmatrix(file_name)
 
-epochs = 1000 # init epochs count
+epochs = 200 # init epochs count
 start = 0 # define start point at row 0
 
 max_iters = 9999 # redundant? Consider removing
@@ -38,7 +38,7 @@ gammas = np.array([0.3]).astype('float32')
 epsilons = np.array([0.9]).astype('float32')
 epsilon_decays = np.array([0.01]).astype('float32')
 
-sampling_sampling_runs = 50
+sampling_sampling_runs = 5
 
 ''' 
 #   ***Comment in to prompt selection of learning parameters for Q Learning***
@@ -109,7 +109,7 @@ del trans_seqs, epoch_costs, costs_matrix, mean_costs, euler_gamma, pi
 
 # %% Calculates average cost of previous epochs (up to 'n' previous epochs)
 
-n = 50
+n = 20
 window_ave = np.zeros_like(mean_costs_matrix)
 for k in range(0,int(np.size(mean_costs_matrix,1))):
     for i in range(1,int(np.size(mean_costs_matrix[:,k])+1)):
@@ -136,17 +136,7 @@ if plotting == True:
     from plotdata import plotBrokenLines, plotLines, plotRoutes, heatmap
     
     # Plot line graph ------------------------
-    
-    n = 20   # calculates average cost of previous epochs (up to 'n' previous epochs)
-    window_ave = np.zeros_like(mean_costs_matrix)
-    for k in range(0,int(np.size(mean_costs_matrix,1))):
-        for i in range(1,int(np.size(mean_costs_matrix[:,k])+1)):
-            if i<n-1:
-                window_ave[i-1,k] = (np.mean(mean_costs_matrix[:,k][0:i]))
-            else:
-                window_ave[i-1,k] = (np.mean(mean_costs_matrix[:,k][i-(n-1):i]))
-        
-    baseline = 120                  # minimum posible cost
+    baseline = 40000                  # minimum posible cost
     variable = alphas               # variable to explore
     title = 'Learning Alpha Search'  # title of graph
     
@@ -156,13 +146,11 @@ if plotting == True:
     
     
     # Plot routes ----------------------------
+    file_xy = 'tsp_matrices/att48_xy.csv'
     
-    file_xy = 'tsp_matrices/toyd_d_xy.csv'
+    plotManyRoutes(seqs,file_xy,alphas)
     
-    plotRoutes(seqs,file_xy,alphas)
-    
-    # HeatMap with interpolation --------------
-    
+    # HeatMap with interpolation --------------   
     a = 'a'                         # string with name of variable in x
     b = 'b'                         # string with nama of variable in y
     np.random.seed(0)               # just for demo
