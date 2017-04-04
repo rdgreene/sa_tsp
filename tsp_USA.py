@@ -23,7 +23,7 @@ int_R, optimal_route, optimal_route_cost =  loadTSPmatrix(distances_file, optima
 
 #%% Define parameters
 
-epochs = 500 # init epochs count
+epochs = 200 # init epochs count
 start = 0 # define start point at row 0
 
 goal_state_reward = 1000
@@ -33,7 +33,7 @@ gammas = np.array([0.01]).astype('float32')
 epsilons = np.array([0.9]).astype('float32')
 epsilon_decays = np.array([0.001]).astype('float32')
 
-sampling_sampling_runs = 10
+sampling_sampling_runs = 2
 
 #%% Q-Learning
 
@@ -95,25 +95,25 @@ del start, epoch, epochs, sampling_sampling_runs, goal_state_reward
 del distances_file, optimal_route_file, a, alpha, e, epsilon, g, gamma, d,  epsilon_decay , sampling_run, loop_idx
 
 # clear non-aggregate metrics variables
-del trans_seqs, epoch_costs, costs_matrix, mean_costs, mean_costs_matrix, euler_gamma, pi
+del trans_seqs, epoch_costs, costs_matrix, mean_costs, mean_costs_matrix
 
 
 #%% Plot performance graphs
 
 
 # import graph functions
-from plotdata import *
+from tsp_PlotData import *
 
 # Plot line graph ------------------------
 baseline = optimal_route_cost                  # minimum posible cost
-variable = alphas               # variable to explore
+variable = ['Agent']              # variable to explore
 title = 'Tour in the USA'  # title of graph
     
-plotLines(window_ave,alphas,baseline,title)
+plotLines(window_ave,variable,baseline,title)
 
 
 # Plot routes ----------------------------
 file_xy = 'tsp_matrices/att48_xy.csv'
 
-plotManyRoutes(seqs,file_xy,alphas)
+plotManyRoutes(seqs,file_xy,variable)
     
