@@ -98,19 +98,16 @@ del trans_seqs, epoch_costs, costs_matrix, mean_costs, mean_costs_matrix
 
 #%% Plot performance graphs
 
-
 # import graph functions
 from tsp_PlotData import *
 
-# Plot line graph ------------------------
-variable = ['Agent']              # variable to explore
-title = 'Tour in the USA'  # title of graph
+file_xy = 'tsp_matrices/att48_xy.csv'  # file with coordenates
+variable = ['Agent']                   # variable to explore
+title = ['Tour in the USA']              # title of graph
     
+# Plot line graph 
 plotLines(norm_cost,variable,title)
 
-
-# Plot routes ----------------------------
-file_xy = 'tsp_matrices/att48_xy.csv'
-
-plotManyRoutes(seqs,file_xy,variable)
+# Plot routes
+plotManyRoutes(seqs,file_xy,title)
     

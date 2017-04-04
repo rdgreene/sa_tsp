@@ -176,17 +176,14 @@ plt.savefig('ultra')
 # import graph functions
 from tsp_PlotData import *
 
-# Plot line graph ------------------------
+file_xy = 'tsp_matrices/att48_xy.csv'   # file with coordenates
 Q_learning = ['singleQ','doubleQ']
-title = 'singleQ vs dobleQ learning'  # title of graph
-    
+title = 'singleQ vs dobleQ learning'    # title of graph
+
+# Plot line graph
 plotLines(norm_cost,Q_learning,title)
 
-#%%
-
-# Plot routes ----------------------------
-file_xy = 'tsp_matrices/att48_xy.csv'
-
+# Plot routes
 plotManyRoutes(seqs,file_xy,Q_learning)
     
 

@@ -121,11 +121,6 @@ def qLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_stat
 
 def doubleQLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_state_reward):
     
-    # import function dependencies
-    from copy import deepcopy
-    import numpy as np
-    from epsilonGreedy import epsilonGreedy
-
     # init in loop NEW
     transition_seqs = []
     total_cost = []
@@ -343,6 +338,7 @@ def loadTSPmatrix(distances_file, optimal_route_file):
 ''' Return Window Average'''    
 
 def getWindowAverage(cost_matrix, n):
+    
     window_ave = np.zeros_like(cost_matrix)
     for k in range(0,int(np.size(cost_matrix,1))):
         for i in range(1,int(np.size(cost_matrix[:,k])+1)):
