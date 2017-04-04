@@ -20,10 +20,10 @@ import pickle
 exp1 = False
 exp2 = False
 exp3 = False
-exp4 = False
+exp4 = True
 exp5 = False
 exp6 = False
-exp7 = True
+exp7 = False
 
 #%% Load problem and define parameters
 
@@ -139,7 +139,7 @@ if exp4 == True:
     alphas = [0.7]
     gammas = [0.8]
     epsilons = [1.0]
-    epsilon_decays = [0.00001, 0.00005, 0.0001, 0.0005, 0.001, 0.005, 0.01]
+    epsilon_decays = [0.00001, 0.0001, 0.001, 0.01, 0.05, 0.01, 0.3]
     
     epochs = 10000
     
@@ -158,8 +158,8 @@ if exp4 == True:
     diagnosticsPlot(plotData, legendData, title, saveFile = False)
 
     # save results
-    #np.save('results/expResults4', mean_costs_matrix)
-    #pickle.dump( parameter_records, open("results/expParameters4.p", "wb" ))                    
+    np.save('results/expResults4', mean_costs_matrix)
+    pickle.dump( parameter_records, open("results/expParameters4.p", "wb" ))                    
 
 
 #%% Q-Learning Experiment 5: Optimise Parameters (gamma)
@@ -229,7 +229,7 @@ if exp7 == True:
     alphas = [0.01]
     gammas = [0.4]
     epsilons = [1.0]
-    epsilon_decays = [0.1 0.2 0.5]
+    epsilon_decays = [0.1, 0.2, 0.5,]
     
     epochs = 5000
     

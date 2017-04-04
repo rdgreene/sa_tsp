@@ -91,7 +91,8 @@ diagnosticsPlot(plotData, legendData, title, saveFile = True)
 #%% Q-Learning Experiment 4: Vary Epsilon Decay
 
 # choose subset of problems for final plot
-subset = [0,2,4,5,6]
+subset = [1,2,3,5,6]
+
 subDict = {}
 
 # load and prepare plotting data
@@ -134,7 +135,7 @@ for d in subset:
     newIdx += 1  
 legendData =  subDict
 
-title = ['Experiment 5: Q-Learning with Different Decay Rates\n', 'expResults5']
+title = ['Experiment 5: Optimise Parameters ( $\gamma$ )\n', 'expResults5']
 
 # plot and save
 diagnosticsPlot(plotData, legendData, title, saveFile = True)
