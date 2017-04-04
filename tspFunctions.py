@@ -109,10 +109,9 @@ def qLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_stat
     
 
 
-
 ''' Doble Q-learning'''
 
- def doubleQLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_state_reward, max_iters):
+def doubleQLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_state_reward):
     
     # import function dependencies
     from copy import deepcopy
@@ -147,7 +146,7 @@ def qLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_stat
             A = np.argwhere(~np.isnan(R[s,:]))
 
             doubleQ = Q1+Q2             # using the addition matrix Q1 + Q2 for E-greedy policy
-            a = epsilonGreedy(epsilon, s, dobleQ, A)
+            a = epsilonGreedy(epsilon, s, doubleQ, A)
         
             transition_seqs[i].append(a)     # record transition made in current iteration
                 
@@ -155,13 +154,13 @@ def qLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_stat
             s_nxt = a     # assign chosen action (a) to be the next state the agent enters
             A_nxt = np.argwhere(~np.isnan(R[s_nxt,:]))   # create list of available actions from next state (s_nxt)
             
-            if rand()<=0.5:
+            if np.random.rand()<=0.5:
 
                 # update Q1 with next step reward estimation from Q2 matrix
                 if (sum(visited) < 3):
                     update = Q1[s,a] + alpha * ((R[s,a] +  gamma * Q2[s_nxt,4]) - Q1[s,a])              # calculate update to Q matrix value for current state Q[s,a] given next state (s_nxt)
                 else: 
-                    update = Q1[s,a] + alpha * ((R[s,a] +  gamma * Q2[s_nxt,np.argmax(Q1[s_nxt, A_nxt])[0]]) - Q1[s,a])     # calculate update to Q matrix value for current state Q[s,a] given next state (s_nxt)
+                    update = Q1[s,a] + alpha * ((R[s,a] +  gamma * Q2[s_nxt,np.argmax(Q1[s_nxt, A_nxt])]) - Q1[s,a])     # calculate update to Q matrix value for current state Q[s,a] given next state (s_nxt)
                 
                 Q1[s,a] = update # update Q matrix value in current state Q[s,a]
                 #cost += R[s,a]
@@ -192,7 +191,7 @@ def qLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_stat
                 if (sum(visited) < 3):
                     update = Q2[s,a] + alpha * ((R[s,a] +  gamma * Q1[s_nxt,4]) - Q2[s,a])              # calculate update to Q matrix value for current state Q[s,a] given next state (s_nxt)
                 else: 
-                    update = Q2[s,a] + alpha * ((R[s,a] +  gamma * Q1[s_nxt,np.argmax(Q2[s_nxt, A_nxt])[0]]) - Q2[s,a])     # calculate update to Q matrix value for current state Q[s,a] given next state (s_nxt)
+                    update = Q2[s,a] + alpha * ((R[s,a] +  gamma * Q1[s_nxt,np.argmax(Q2[s_nxt, A_nxt])]) - Q2[s,a])     # calculate update to Q matrix value for current state Q[s,a] given next state (s_nxt)
                 
                 Q2[s,a] = update # update Q matrix value in current state Q[s,a]
                 #cost += R[s,a]

@@ -186,17 +186,9 @@ def plotManyRoutes(seqs,file_xy,variable):
         path = np.asarray([coordenates[x,:] for x in paths[0:-1,0]])
         plt.plot(path[:,0],path[:,1], linestyle = '-', c='orange', 
                  linewidth=8, alpha=0.8, zorder=2, label='best path ' + np.array_str(paths[0:-1,0]))
-         
-       # Add a legend
-        legend = plt.legend(bbox_to_anchor=(1, 1), loc='upper left', shadow=False,fontsize= 10)
-        legend.get_frame().set_facecolor('white')   # legend background
-        legend.get_frame().set_edgecolor('black')    # legend edge color
-        legtext = legend.get_texts()
-        for text in legtext[0:-4]:             # text in legend
-            plt.setp(text)
-        
+          
         # plot states/cities
-        mapa.scatter(coordenates[0:-1,0],coordenates[0:-1,1],
+        plt.scatter(coordenates[0:-1,0],coordenates[0:-1,1],
                      c='white', s=800, 
                      label='white',alpha=1, 
                      edgecolors='black', zorder=3)
