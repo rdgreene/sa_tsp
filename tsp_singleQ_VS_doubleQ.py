@@ -11,30 +11,31 @@ Created on Sat Mar 25 17:10:03 2017
 
 # import libraries
 import numpy as np
-from scipy import *
 import matplotlib.pyplot as plt
 
 # import functions
-from loadTSPmatrix import loadTSPmatrix
-from tspFunctions import doubleQLearn
-from tspFunctions import qLearn
+from tspFunctions import *
 
-#%% Load problem and define parameters
+#%% Load problem
 
-file_name = 'tsp_matrices/att48_d.csv'
-int_R = loadTSPmatrix(file_name)
+distances_file = 'tsp_matrices/att48_d.csv'
+optimal_route_file = 'tsp_matrices/att48_s.csv'
 
-epochs = 500 # init epochs count
+int_R, optimal_route, optimal_route_cost =  loadTSPmatrix(distances_file, optimal_route_file)
+
+#%% Define parameters
+
+epochs = 1000 # init epochs count
 start = 0 # define start point at row 0
 
 goal_state_reward = 1000
 
-alphas = np.array([0.9]).astype('float32')
+alphas = np.array([0.0001]).astype('float32')
 gammas = np.array([0.01]).astype('float32')
 epsilons = np.array([0.9]).astype('float32')
-epsilon_decays = np.array([0.001]).astype('float32')
+epsilon_decays = np.array([0.0001]).astype('float32')
 
-sampling_sampling_runs = 2
+sampling_sampling_runs = 1
 
 #%% Q-Learning
 
@@ -76,7 +77,7 @@ np.save('ultraResults', mean_costs_matrix)
             
 
 #%% Clear some metrics variables
-del trans_seqs, epoch_costs, costs_matrix, mean_costs, euler_gamma, pi
+del trans_seqs, epoch_costs, costs_matrix, mean_costs
 del epoch, ps_dic, loop_idx, a, d, e, g, sampling_run
 
 
@@ -152,7 +153,7 @@ window_ave = np.concatenate((window_ave1,window_ave2),axis=1)
 # clear input variables
 del start, epoch, epochs, sampling_sampling_runs, goal_state_reward
 # clear any variables created solely for 'looping' purposes
-del file_name, a, alpha, e, epsilon, g, gamma, d,  epsilon_decay , sampling_run, loop_idx
+del distances_file, optimal_route_file, a, alpha, e, epsilon, g, gamma, d,  epsilon_decay , sampling_run, loop_idx
 # clear non-aggregate metrics variables
 del trans_seqs, epoch_costs, costs_matrix, mean_costs, i, k
 
@@ -172,11 +173,11 @@ plt.savefig('ultra')
 
 #%% Plot performance graphs
 
-# import dependencies
-from plotdata import plotBrokenLines, plotLines, plotManyRoutes, heatmap
+# import graph functions
+from plotdata import *
 
 # Plot line graph ------------------------
-baseline = 40000                  # minimum posible cost
+baseline = optimal_route_cost                  # minimum posible cost
 Q_learning = ['singleQ','doubleQ']
 title = 'singleQ vs dobleQ learning'  # title of graph
     

@@ -56,6 +56,10 @@ def nTDqLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_s
                 s[j+1,0] = a[j,0]                           # assign chosen action (a) to be the next state the agent enters
                 A[j+1,:] = np.argwhere(~np.isnan(R[s[j+1,0],:]))  # create list of available actions from next state (s)
 
+            
+
+
+
             # update Q matrix
             if (sum(visited) < 3):
                 update = Q[s,a] + alpha * ((R[s,a] +  gamma * Q[s_nxt,4]) - Q[s,a]) # calculate update to Q matrix value for current state Q[s,a] given next state (s_nxt)
