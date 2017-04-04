@@ -164,23 +164,34 @@ def plotManyRoutes(seqs,file_xy,variable):
         plt.xticks([], [])
         plt.yticks([], [])
                 
-       # plot other paths
-        for k in range(1,np.size(paths,1)):                         
+       # plot second most common paths
+        path = np.asarray([coordenates[x,:] for x in paths[0:-1,1]])
+        width = 8*(paths[-1,1]/max(paths[-1,:]))
+        plt.plot(path[:,0],path[:,1], linestyle = '-', c='gray', 
+                linewidth=width, alpha=0.2, zorder=2, label ='other paths')
+        
+        # plot other paths
+        for k in range(2,np.size(paths,1)):                         
             path = np.asarray([coordenates[x,:] for x in paths[0:-1,k]])
-            width = 8*(paths[-1,k]/max(paths[-1,:]))
+            width = 30*(paths[-1,k]/max(paths[-1,:]))
             plt.plot(path[:,0],path[:,1], linestyle = '-', c='gray', 
-                     linewidth=width, alpha=0.2, zorder=2, label ='other paths')
-       # plot preferred path
+                     linewidth=width, alpha=0.2, zorder=2, label ='_nolegend_')
+
+       # plot most common path
         path = np.asarray([coordenates[x,:] for x in paths[0:-1,0]])
         plt.plot(path[:,0],path[:,1], linestyle = '-', c='orange', 
                  linewidth=8, alpha=0.8, zorder=2, label='best path')
         
         # Add a legend
-        legend = plt.legend(loc='upper right', shadow=False,fontsize= 20)
+        legend = plt.legend(loc='upper left', shadow=False,fontsize= 20)
         legend.get_frame().set_facecolor('whitesmoke')  # legend background
         legend.get_frame().set_edgecolor('lightgray')   # legend edge color
-        for text in legend.get_texts[0:2]:                 # text in legend
+        for text in legend.get_texts():                 # text in legend
             plt.setp(text)
+
+        # set the linewidth of each legend object
+        for legobj in legend.legendHandles:
+            legobj.set_linewidth(4)
 
         # plot states/cities
         plt.scatter(coordenates[0:-1,0],coordenates[0:-1,1],

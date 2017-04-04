@@ -25,15 +25,15 @@ int_R, optimal_route, optimal_route_cost =  loadTSPmatrix(distances_file, optima
 
 #%% Define parameters
 
-epochs = 2000 # init epochs count
+epochs = 300 # init epochs count
 start = 0 # define start point at row 0
 
 goal_state_reward = 1000
 
 alphas = np.array([1]).astype('float32')
-gammas = np.array([0.0001]).astype('float32')
+gammas = np.array([0.001]).astype('float32')
 epsilons = np.array([0.9]).astype('float32')
-epsilon_decays = np.array([0.0001]).astype('float32')
+epsilon_decays = np.array([0.001]).astype('float32')
 
 sampling_sampling_runs = 2
 
