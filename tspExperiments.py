@@ -18,9 +18,10 @@ import pickle
 
 #%% Load problem and define parameters
 
-file_name = 'tsp_matrices/toy_d.csv'
-int_R = loadTSPmatrix(file_name)
+distances_file = 'tsp_matrices/toy_d.csv'
+optimal_route_file = 'tsp_matrices/toy_s.csv'
 
+int_R, optimal_route, optimal_route_cost =  loadTSPmatrix(distances_file, optimal_route_file)
 
 #%% Set Default Parameters
 
