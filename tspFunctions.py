@@ -369,7 +369,7 @@ def testParameters(alphas, gammas, epsilons, epsilon_decays,  sampling_runs, epo
                 for d in range(0, np.size(epsilon_decays)):
                     
                     alpha = alphas[a]; gamma = gammas[g]; epsilon = epsilons[e]; epsilon_decay = epsilon_decays[d]
-                    print('\nRunning Variant %s [Alpha: %.4f, Gamma: %.4f, Epsilon: %.4f, Decay: %.4f]...' % (loop_idx+1, alpha, gamma, epsilon, epsilon_decay))
+                    print('\nRunning Variant %s [Alpha: %.4f, Gamma: %.4f, Epsilon: %.4f, Decay: %.5f]...' % (loop_idx+1, alpha, gamma, epsilon, epsilon_decay))
     
                     for sampling_run in range (0, sampling_runs):
                     
@@ -385,7 +385,7 @@ def testParameters(alphas, gammas, epsilons, epsilon_decays,  sampling_runs, epo
                         # calculate mean costs across all 'sampling_runs'
                         mean_costs = np.mean(costs_matrix, 1)
                      
-                    ps_dic[loop_idx] = (r'$\alpha = %.4f$, $\gamma = %.4f$, $\epsilon = %.4f$, $\lambda = %.4f$' % (alpha, gamma, epsilon, epsilon_decay)) 
+                    ps_dic[loop_idx] = (r'$\alpha = %.4f$, $\gamma = %.4f$, $\epsilon = %.4f$, $\lambda = %.5f$' % (alpha, gamma, epsilon, epsilon_decay)) 
                     #ps_dic[loop_idx] = ('A [%.2f], G [%.2f], E [%.2f], D [%.4f]' % (alpha, gamma, epsilon, epsilon_decay))   
                     mean_costs_matrix[:, loop_idx] = mean_costs; loop_idx +=1
                     

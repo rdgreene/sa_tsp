@@ -35,7 +35,7 @@ gammas = [0.8]
 epsilons = [1.0]
 epsilon_decays = [0.0005]
 
-baseline = 120
+baseline = optimal_route_cost
 
 # moving average 'smoothing rate'
 smooth = 20
@@ -63,7 +63,7 @@ plotData = getWindowAverage(plotData, smooth)
 legendData = parameter_records
 
 # generate and save plots
-diagnosticsPlot(plotData, legendData, title, saveFile = True)
+diagnosticsPlot(plotData, legendData, title, saveFile = False)
 #plotLines(window_ave,alphas, 120, title, True)
 #plt.figure(figsize=(12,8))
 #plt.plot(window_ave)
@@ -72,8 +72,8 @@ diagnosticsPlot(plotData, legendData, title, saveFile = True)
 #plt.savefig(title)
 
 # save results
-np.save('expResults1', mean_costs_matrix)
-pickle.dump(parameter_records, open( "expParameters1.p", "wb" ))   
+#np.save('expResults1', mean_costs_matrix)
+#pickle.dump(parameter_records, open( "expParameters1.p", "wb" ))   
 
 
 #%% Q-Learning Experiment 2: Vary Learning Rate (Alpha)
@@ -99,7 +99,7 @@ plotData = getWindowAverage(plotData, smooth)
 legendData = parameter_records
 
 # generate and save plots
-diagnosticsPlot(plotData, legendData, title, saveFile = True)
+diagnosticsPlot(plotData, legendData, title, saveFile = False)
 #plotLines(window_ave, alphas, 120, title, True)
 #plt.figure(figsize=(12,8))
 #plt.plot(window_ave)
@@ -108,8 +108,8 @@ diagnosticsPlot(plotData, legendData, title, saveFile = True)
 #plt.savefig(title)
 
 # save results
-np.save('expResults2', mean_costs_matrix)
-pickle.dump(parameter_records, open( "expParameters2.p", "wb" ))  
+#np.save('expResults2', mean_costs_matrix)
+#pickle.dump(parameter_records, open( "expParameters2.p", "wb" ))  
 
 
 #%% Q-Learning Experiment 3: Vary Gamma
@@ -135,7 +135,7 @@ plotData = getWindowAverage(plotData, smooth)
 legendData = parameter_records
 
 # generate and save plots
-diagnosticsPlot(plotData, legendData, title, saveFile = True)
+diagnosticsPlot(plotData, legendData, title, saveFile = False)
 #plotLines(window_ave, alphas, 120, title, True)
 #plt.figure(figsize=(12,8))
 #plt.plot(window_ave)
@@ -144,8 +144,8 @@ diagnosticsPlot(plotData, legendData, title, saveFile = True)
 #plt.savefig(title)
 
 # save results
-np.save('expResults3', mean_costs_matrix)
-pickle.dump(parameter_records, open( "expParameters3.p", "wb" ))  
+#np.save('expResults3', mean_costs_matrix)
+#pickle.dump(parameter_records, open( "expParameters3.p", "wb" ))  
 
 
 #%% Q-Learning Experiment 4: Vary Epsilon Decay
@@ -171,7 +171,7 @@ plotData = getWindowAverage(plotData, smooth)
 legendData = parameter_records
 
 # generate and save plots
-diagnosticsPlot(plotData, legendData, title, saveFile = True)
+diagnosticsPlot(plotData, legendData, title, saveFile = False)
 #plotLines(window_ave, alphas, 120, title, True)
 #plt.figure(figsize=(12,8))
 #plt.plot(window_ave)
@@ -180,8 +180,8 @@ diagnosticsPlot(plotData, legendData, title, saveFile = True)
 #plt.savefig(title)
 
 # save results
-np.save('expResults4', mean_costs_matrix)
-pickle.dump( parameter_records, open("expParameters4.p", "wb" ))                    
+#np.save('expResults4', mean_costs_matrix)
+#pickle.dump( parameter_records, open("expParameters4.p", "wb" ))                    
 
 
 #%% Clear Redundant Variables from workspace
@@ -194,8 +194,7 @@ del start, epochs, sampling_runs, goal_reward
 # clear any variables created solely for 'looping' purposes
 del file_name
 
-# clear non-aggregate metrics variables
-#del euler_gamma, pi
+
 
 
 
