@@ -15,6 +15,13 @@ from tspFunctions import *
 from plotdata import *
 import pickle
 
+#%% Define 'Experiments' to run
+
+exp1 = False
+exp2 = False
+exp3 = False
+exp4 = False
+exp5 = True
 
 #%% Load problem and define parameters
 
@@ -26,173 +33,171 @@ int_R, optimal_route, optimal_route_cost =  loadTSPmatrix(distances_file, optima
 #%% Set Default Parameters
 
 start = 0
-epochs = 5000 # init epochs count
 goal_reward = 100
 sampling_runs = 100
-
-alphas = [0.7]
-gammas = [0.8]
-epsilons = [1.0]
-epsilon_decays = [0.0005]
 
 baseline = optimal_route_cost
 
 # moving average 'smoothing rate'
-smooth = 20
+smooth = 50
 
 #%% Q-Learning Experiment 1: Default parameters
 
-alphas = [0.7]
-gammas = [0.8]
-epsilons = [1.0]
-epsilon_decays = [0.0005]
+if exp1 == True:
 
-#start = 0
-#epochs = 5000 # init epochs count
-#goal_reward = 100
-#sampling_runs = 50
+    alphas = [0.7]
+    gammas = [0.8]
+    epsilons = [1.0]
+    epsilon_decays = [0.0005]
+    
+    epochs = 5000 
+    
+    title = ['Experiment 1: Q-Learning with Default Parameters\n', 'expResults1']
+    
+    # run Q-Learning with specified parameters
+    mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
+    
+    # subtract baseline cost and convert to moving average
+    plotData = mean_costs_matrix - baseline
+    plotData = getWindowAverage(plotData, smooth)
+    legendData = parameter_records
+    
+    # generate and save plots
+    diagnosticsPlot(plotData, legendData, title, saveFile = False)
 
-title = ['Experiment 1: Q-Learning with Default Parameters\n', 'expResults1']
-
-# run Q-Learning with specified parameters
-mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
-
-# subtract baseline cost and convert to moving average
-plotData = mean_costs_matrix - baseline
-plotData = getWindowAverage(plotData, smooth)
-legendData = parameter_records
-
-# generate and save plots
-diagnosticsPlot(plotData, legendData, title, saveFile = False)
-#plotLines(window_ave,alphas, 120, title, True)
-#plt.figure(figsize=(12,8))
-#plt.plot(window_ave)
-#plt.legend(parameter_records.values())
-#plt.title(title)
-#plt.savefig(title)
-
-# save results
-#np.save('results/expResults1', mean_costs_matrix)
-#pickle.dump(parameter_records, open( "results/expParameters1.p", "wb" ))   
+    # save results
+    #np.save('results/expResults1', mean_costs_matrix)
+    #pickle.dump(parameter_records, open( "results/expParameters1.p", "wb" ))   
 
 
 #%% Q-Learning Experiment 2: Vary Learning Rate (Alpha)
 
-alphas = [0.001, 0.01, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0]
-gammas = [0.8]
-epsilons = [1.0]
-epsilon_decays = [0.0005]
+if exp2 == True:
 
-#start = 0
-#epochs = 5000
-#goal_reward = 100
-#sampling_runs = 100
+    alphas = [0.001, 0.01, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0]
+    gammas = [0.8]
+    epsilons = [1.0]
+    epsilon_decays = [0.0005]
+    
+    epochs = 5000
+    
+    
+    title = ['Experiment 2: Q-Learning with Different Learning Rates\n', 'expResults2']
+    
+    # run Q-Learning with specified parameters
+    mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
+    
+    # subtract baseline cost and convert to moving average
+    plotData = mean_costs_matrix - baseline
+    plotData = getWindowAverage(plotData, smooth)
+    legendData = parameter_records
+    
+    # generate and save plots
+    diagnosticsPlot(plotData, legendData, title, saveFile = False)
 
-title = ['Experiment 2: Q-Learning with Different Learning Rates\n', 'expResults2']
-
-# run Q-Learning with specified parameters
-mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
-
-# subtract baseline cost and convert to moving average
-plotData = mean_costs_matrix - baseline
-plotData = getWindowAverage(plotData, smooth)
-legendData = parameter_records
-
-# generate and save plots
-diagnosticsPlot(plotData, legendData, title, saveFile = False)
-#plotLines(window_ave, alphas, 120, title, True)
-#plt.figure(figsize=(12,8))
-#plt.plot(window_ave)
-#plt.legend(parameter_records.values())
-#plt.title(title)
-#plt.savefig(title)
-
-# save results
-#np.save('results/expResults2', mean_costs_matrix)
-#pickle.dump(parameter_records, open( "results/expParameters2.p", "wb" ))  
+    # save results
+    #np.save('results/expResults2', mean_costs_matrix)
+    #pickle.dump(parameter_records, open( "results/expParameters2.p", "wb" ))  
 
 
 #%% Q-Learning Experiment 3: Vary Gamma
 
-alphas = [0.7]
-gammas = [0.001, 0.01, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0]
-epsilons = [1.0]
-epsilon_decays = [0.0005]
+if exp3 == True:
 
-#start = 0
-#epochs = 5000
-#goal_reward = 100
-#sampling_runs = 50
+    alphas = [0.7]
+    gammas = [0.001, 0.01, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0]
+    epsilons = [1.0]
+    epsilon_decays = [0.0005]
+    
+    epochs = 5000
+    
+    
+    title = ['Experiment 3: Q-Learning with Different Discount Factors\n', 'expResults3']
+    
+    # run Q-Learning with specified parameters
+    mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
+    
+    # subtract baseline cost and convert to moving average
+    plotData = mean_costs_matrix - baseline
+    plotData = getWindowAverage(plotData, smooth)
+    legendData = parameter_records
+    
+    # generate and save plots
+    diagnosticsPlot(plotData, legendData, title, saveFile = False)
 
-title = ['Experiment 3: Q-Learning with Different Discount Factors\n', 'expResults3']
-
-# run Q-Learning with specified parameters
-mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
-
-# subtract baseline cost and convert to moving average
-plotData = mean_costs_matrix - baseline
-plotData = getWindowAverage(plotData, smooth)
-legendData = parameter_records
-
-# generate and save plots
-diagnosticsPlot(plotData, legendData, title, saveFile = False)
-#plotLines(window_ave, alphas, 120, title, True)
-#plt.figure(figsize=(12,8))
-#plt.plot(window_ave)
-#plt.legend(parameter_records.values())
-#plt.title(title)
-#plt.savefig(title)
-
-# save results
-#np.save('results/expResults3', mean_costs_matrix)
-#pickle.dump(parameter_records, open( "results/expParameters3.p", "wb" ))  
+    # save results
+    #np.save('results/expResults3', mean_costs_matrix)
+    #pickle.dump(parameter_records, open( "results/expParameters3.p", "wb" ))  
 
 
 #%% Q-Learning Experiment 4: Vary Epsilon Decay
 
-alphas = [0.7]
-gammas = [0.8]
-epsilons = [1.0]
-epsilon_decays = [0.00001, 0.00005, 0.0001, 0.0005, 0.001, 0.005, 0.01]
+if exp4 == True:
 
-#start = 0
-epochs = 10000
-#goal_reward = 100
-#sampling_runs = 50
+    alphas = [0.7]
+    gammas = [0.8]
+    epsilons = [1.0]
+    epsilon_decays = [0.00001, 0.00005, 0.0001, 0.0005, 0.001, 0.005, 0.01]
+    
+    epochs = 10000
+    
+    
+    title = ['Experiment 4: Q-Learning with Different Decay Rates\n', 'expResults4']
+    
+    # run Q-Learning with specified parameters
+    mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
+    
+    # subtract baseline cost and convert to moving average
+    plotData = mean_costs_matrix - baseline
+    plotData = getWindowAverage(plotData, smooth)
+    legendData = parameter_records
+    
+    # generate and save plots
+    diagnosticsPlot(plotData, legendData, title, saveFile = False)
 
-title = ['Experiment 4: Q-Learning with Different Decay Rates\n', 'expResults4']
+    # save results
+    #np.save('results/expResults4', mean_costs_matrix)
+    #pickle.dump( parameter_records, open("results/expParameters4.p", "wb" ))                    
 
-# run Q-Learning with specified parameters
-mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
 
-# subtract baseline cost and convert to moving average
-plotData = mean_costs_matrix - baseline
-plotData = getWindowAverage(plotData, smooth)
-legendData = parameter_records
+#%% Q-Learning Experiment 5: Optimise Parameters A
 
-# generate and save plots
-diagnosticsPlot(plotData, legendData, title, saveFile = False)
-#plotLines(window_ave, alphas, 120, title, True)
-#plt.figure(figsize=(12,8))
-#plt.plot(window_ave)
-#plt.legend(parameter_records.values())
-#plt.title(title)
-#plt.savefig(title)
+if exp5 == True:
 
-# save results
-#np.save('results/expResults4', mean_costs_matrix)
-#pickle.dump( parameter_records, open("results/expParameters4.p", "wb" ))                    
+    alphas = [0.01]
+    gammas = [0.001, 0.01, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0]
+    epsilons = [1.0]
+    epsilon_decays = [0.0005]
+    
+    epochs = 5000
+    
+    
+    title = ['Experiment 5 Optimise Parameters ( $\gamma$ )\n', 'expResults4']
+    
+    # run Q-Learning with specified parameters
+    mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
+    
+    # subtract baseline cost and convert to moving average
+    plotData = mean_costs_matrix - baseline
+    plotData = getWindowAverage(plotData, smooth)
+    legendData = parameter_records
+    
+    # generate and save plots
+    diagnosticsPlot(plotData, legendData, title, saveFile = False)
 
+    # save results
+    np.save('results/expResults5', mean_costs_matrix)
+    pickle.dump( parameter_records, open("results/expParameters5.p", "wb" )) 
 
 #%% Clear Redundant Variables from workspace
 
 ''' KEEP AT END OF SCRIPT'''
 
 # clear input variables
-del start, epochs, sampling_runs, goal_reward
+#del start, epochs, sampling_runs, goal_reward
 
 # clear any variables created solely for 'looping' purposes
-del file_name
+#del file_name
 
 
 
