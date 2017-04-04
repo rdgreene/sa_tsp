@@ -117,10 +117,6 @@ for a in range(0, np.size(alphas)):
                 #ps_dic[loop_idx] = ('A [%.2f], G [%.2f], E [%.2f], D [%.4f]' % (alpha, gamma, epsilon, epsilon_decay))   
                 mean_costs_matrix2[:, loop_idx] = mean_costs; loop_idx +=1
 
-np.save('ultraParameters', alphas)  
-np.save('ultraResults2', mean_costs_matrix2)                
-            
-
 
 # %% Calculates average cost of previous epochs (up to 'n' previous epochs)
 

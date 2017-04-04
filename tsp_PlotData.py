@@ -13,7 +13,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tspFunctions import loadCoordenates
 
-
 def heatmap(grid,a,b):
       
     # define font style for axes and title
@@ -253,7 +252,7 @@ def plotBrokenLines(matrix,variable,baseline,title):
     # Add a grid, axes labels and tittle
     ax.grid(b=True, which='major', color='lightgray', linestyle='-')    # grid on
     ax_base.set_xlabel('Epochs', fontdict=axis_font)                    # x-label
-    ax.set_ylabel('Cost', fontdict=axis_font)                           # y-label
+    ax.set_ylabel('Cost Ratio (agent/optimal)', fontdict=axis_font)                           # y-label
     ax.set_title(title, y=1.1, fontdict=title_font) # title
     
     # Add a legend
@@ -270,11 +269,42 @@ def plotBrokenLines(matrix,variable,baseline,title):
     plt.show() 
 
 
-def plotLines(matrix,variable,baseline,title):
+def plotLines(matrix,variable,title):
     
-    import matplotlib.gridspec as gridspec
-    import numpy as np
-    import matplotlib.pyplot as plt
+    axis_font = {'color':  'black',         # define font for axis labels
+            'weight': 500,
+            'size': 16 }
+    
+    plt.figure( figsize=(10, 7))
+    
+    for i in range(0,int(np.size(variable))):          # plot learning data
+        plt.plot(matrix[:,i], label=str(variable[i]))
+        
+    # limit the view of the graphs
+    plt.ylim(0, np.amax(matrix))
+
+    # Add a grid, axes labels and tittle
+    plt.grid(b=True, which='major', color='lightgray', linestyle='-')   # grid on
+    plt.xlabel('Epochs', fontdict=axis_font)                            # x-label
+    plt.ylabel('Cost Ratio (agent/optimal)', fontdict=axis_font)        # y-label
+    plt.suptitle(title, y=1, fontsize = 20, style = 'normal', weight=500) # title
+    
+    # Add a legend
+    legend = plt.legend(loc='upper right', shadow=False,fontsize= 16)
+    legend.get_frame().set_facecolor('whitesmoke')   # legend background
+    legend.get_frame().set_edgecolor('lightgray')    # legend edge color
+    for text in legend.get_texts():             # text in legend
+        plt.setp(text)
+    
+    # set the linewidth of each legend object
+    for legobj in legend.legendHandles:
+        legobj.set_linewidth(5)
+    
+    plt.show()
+
+
+
+def plotLines_base(matrix,variable,baseline,title):
 
     axis_font = {'color':  'black',         # define font for axis labels
             'weight': 500,
