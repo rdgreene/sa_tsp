@@ -117,10 +117,6 @@ for a in range(0, np.size(alphas)):
                 #ps_dic[loop_idx] = ('A [%.2f], G [%.2f], E [%.2f], D [%.4f]' % (alpha, gamma, epsilon, epsilon_decay))   
                 mean_costs_matrix2[:, loop_idx] = mean_costs; loop_idx +=1
 
-np.save('ultraParameters', alphas)  
-np.save('ultraResults2', mean_costs_matrix2)                
-            
-
 
 # %% Calculates average cost of previous epochs (up to 'n' previous epochs)
 
@@ -147,6 +143,7 @@ for k in range(0,int(np.size(mean_costs_matrix2,1))):
             window_ave2[i-1,k] = (np.mean(mean_costs_matrix2[:,k][i-(n-1):i]))
 
 window_ave = np.concatenate((window_ave1,window_ave2),axis=1)
+norm_cost = window_ave/optimal_route_cost
 
 # concatenate list of tour sequences from both experiments
 seqs.extend(seqs2)
@@ -179,18 +176,14 @@ plt.savefig('ultra')
 # import graph functions
 from tsp_PlotData import *
 
-# Plot line graph ------------------------
-baseline = optimal_route_cost                  # minimum posible cost
+file_xy = 'tsp_matrices/att48_xy.csv'   # file with coordenates
 Q_learning = ['singleQ','doubleQ']
-title = 'singleQ vs dobleQ learning'  # title of graph
-    
-plotLines(window_ave,Q_learning,baseline,title)
+title = 'singleQ vs dobleQ learning'    # title of graph
 
-#%%
+# Plot line graph
+plotLines(norm_cost,Q_learning,title)
 
-# Plot routes ----------------------------
-file_xy = 'tsp_matrices/att48_xy.csv'
-
+# Plot routes
 plotManyRoutes(seqs,file_xy,Q_learning)
     
 

@@ -26,7 +26,7 @@ int_R, optimal_route, optimal_route_cost =  loadTSPmatrix(distances_file, optima
 
 # load and prepare plotting data
 plotData = np.load('results/expResults1.npy')
-plotData = plotData - optimal_route_cost
+plotData = plotData / optimal_route_cost
 smooth = 50; plotData = getWindowAverage(plotData, smooth)
 legendData =  pickle.load( open('results/expParameters1.p', 'rb' ))
 
@@ -44,7 +44,7 @@ subDict = {}
 
 # load and prepare plotting data
 plotData = np.load('results/expResults2.npy')
-plotData = plotData - optimal_route_cost
+plotData = plotData / optimal_route_cost
 plotData = plotData[:,subset] # select results of interest
 smooth = 50; plotData = getWindowAverage(plotData, smooth)
 legendData =  pickle.load( open('results/expParameters2.p', 'rb' ))
@@ -71,7 +71,7 @@ subDict = {}
 
 # load and prepare plotting data
 plotData = np.load('results/expResults3.npy')
-plotData = plotData - optimal_route_cost
+plotData = plotData / optimal_route_cost
 plotData = plotData[:,subset] # select results of interest
 smooth = 50; plotData = getWindowAverage(plotData, smooth)
 legendData =  pickle.load( open('results/expParameters3.p', 'rb' ))
@@ -96,7 +96,7 @@ subDict = {}
 
 # load and prepare plotting data
 plotData = np.load('results/expResults4.npy')
-plotData = plotData - optimal_route_cost
+plotData = plotData / optimal_route_cost
 plotData = plotData[:,subset] # select results of interest
 smooth = 50; plotData = getWindowAverage(plotData, smooth)
 legendData =  pickle.load( open('results/expParameters4.p', 'rb' ))
@@ -122,7 +122,7 @@ subDict = {}
 
 # load and prepare plotting data
 plotData = np.load('results/expResults5.npy')
-plotData = plotData - optimal_route_cost
+plotData = plotData / optimal_route_cost
 plotData = plotData[:,subset] # select results of interest
 smooth = 50; plotData = getWindowAverage(plotData, smooth)
 legendData =  pickle.load( open('results/expParameters5.p', 'rb' ))

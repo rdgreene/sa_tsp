@@ -71,9 +71,6 @@ for a in range(0, np.size(alphas)):
                 #ps_dic[loop_idx] = ('A [%.2f], G [%.2f], E [%.2f], D [%.4f]' % (alpha, gamma, epsilon, epsilon_decay))   
                 mean_costs_matrix[:, loop_idx] = mean_costs; loop_idx +=1
 
-np.save('ultraParameters', alphas)  
-np.save('ultraResults', mean_costs_matrix)                
-          
 
 # Calculates average cost of previous epochs (up to 'n' previous epochs)
 n = 20
@@ -84,7 +81,8 @@ for k in range(0,int(np.size(mean_costs_matrix,1))):
             window_ave[i-1,k] = (np.mean(mean_costs_matrix[:,k][0:i]))
         else:
             window_ave[i-1,k] = (np.mean(mean_costs_matrix[:,k][i-(n-1):i]))
-  
+
+norm_cost = window_ave/optimal_route_cost
 
 #%% Clear Redundant Variables from workspace
 
@@ -100,20 +98,16 @@ del trans_seqs, epoch_costs, costs_matrix, mean_costs, mean_costs_matrix
 
 #%% Plot performance graphs
 
-
 # import graph functions
 from tsp_PlotData import *
 
-# Plot line graph ------------------------
-baseline = optimal_route_cost                  # minimum posible cost
-variable = ['Agent']              # variable to explore
-title = 'Tour in the USA'  # title of graph
+file_xy = 'tsp_matrices/att48_xy.csv'  # file with coordenates
+variable = ['Agent']                   # variable to explore
+title = ['Tour in the USA']              # title of graph
     
-plotLines(window_ave,variable,baseline,title)
+# Plot line graph 
+plotLines(norm_cost,variable,title)
 
-
-# Plot routes ----------------------------
-file_xy = 'tsp_matrices/att48_xy.csv'
-
-plotManyRoutes(seqs,file_xy,variable)
+# Plot routes
+plotManyRoutes(seqs,file_xy,title)
     
