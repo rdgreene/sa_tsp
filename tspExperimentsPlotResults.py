@@ -115,18 +115,18 @@ title = ['Experiment 4: Q-Learning with Different Decay Rates\n', 'expResults4']
 diagnosticsPlot(plotData, legendData, title, saveFile = True)
 
 
-#%% Q-Learning Experiment 5: #%% Q-Learning Experiment 5: Optimise Parameters (gamma)
+#%% Q-Learning Experiment 5a: Optimise Parameters (learning rate)
 
 # choose subset of problems for final plot
 subset = [0,1,2,3,4,5,6,7]
 subDict = {}
 
 # load and prepare plotting data
-plotData = np.load('results/expResults5.npy')
+plotData = np.load('results/expResults5a.npy')
 plotData = plotData / optimal_route_cost
 plotData = plotData[:,subset] # select results of interest
 smooth = 50; plotData = getWindowAverage(plotData, smooth)
-legendData =  pickle.load( open('results/expParameters5.p', 'rb' ))
+legendData =  pickle.load( open('results/expParameters5a.p', 'rb' ))
 
 # update legendData to reflect subset of results being plotted
 newIdx = 0
@@ -135,7 +135,32 @@ for d in subset:
     newIdx += 1  
 legendData =  subDict
 
-title = ['Experiment 5: Optimise Parameters ( $\gamma$ )\n', 'expResults5']
+title = ['Experiment 5a: Optimise Parameters (Learning Rate)\n', 'expResults5a']
+
+# plot and save
+diagnosticsPlot(plotData, legendData, title, saveFile = True)
+
+#%% Q-Learning Experiment 5a: Optimise Parameters (dscount factor)
+
+# choose subset of problems for final plot
+subset = [0,1,2,3,4,5,6,7]
+subDict = {}
+
+# load and prepare plotting data
+plotData = np.load('results/expResults5b.npy')
+plotData = plotData / optimal_route_cost
+plotData = plotData[0:500,subset] # select results of interest
+smooth = 50; plotData = getWindowAverage(plotData, smooth)
+legendData =  pickle.load( open('results/expParameters5b.p', 'rb' ))
+
+# update legendData to reflect subset of results being plotted
+newIdx = 0
+for d in subset:
+    subDict[newIdx] = legendData[d]
+    newIdx += 1  
+legendData =  subDict
+
+title = ['Experiment 5b: Optimise Parameters (Discount Factor)\n', 'expResults5b']
 
 # plot and save
 diagnosticsPlot(plotData, legendData, title, saveFile = True)

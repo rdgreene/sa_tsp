@@ -20,10 +20,10 @@ import pickle
 exp1 = False
 exp2 = False
 exp3 = False
-exp4 = True
-exp5 = False
-exp6 = False
-exp7 = False
+exp4 = False
+exp5a = True
+exp5b = False
+
 
 #%% Load problem and define parameters
 
@@ -162,19 +162,49 @@ if exp4 == True:
     pickle.dump( parameter_records, open("results/expParameters4.p", "wb" ))                    
 
 
-#%% Q-Learning Experiment 5: Optimise Parameters (gamma)
+#%% Q-Learning Experiment 5a: Optimise Parameters (learning rate)
 
-if exp5 == True:
+if exp5a == True:
 
-    alphas = [0.01]
+    alphas = [0.001, 0.01, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0]
+    gammas = [0.8]
+    epsilons = [1.0]
+    epsilon_decays = [0.3]
+    
+    epochs = 5000
+    
+    
+    title = ['Experiment 5a: Optimise Parameters (Learning Rate)\n', 'expResults5']
+    
+    # run Q-Learning with specified parameters
+    mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
+    
+    # subtract baseline cost and convert to moving average
+    plotData = mean_costs_matrix / baseline
+    plotData = getWindowAverage(plotData, smooth)
+    legendData = parameter_records
+    
+    # generate and save plots
+    diagnosticsPlot(plotData, legendData, title, saveFile = False)
+
+    # save results
+    np.save('results/expResults5a', mean_costs_matrix)
+    pickle.dump( parameter_records, open("results/expParameters5a.p", "wb" )) 
+
+    
+#%% Q-Learning Experiment 5b: Optimise Parameters (discount factor)
+
+if exp5b == True:
+
+    alphas = [0.1]
     gammas = [0.001, 0.01, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0]
     epsilons = [1.0]
-    epsilon_decays = [0.0005]
+    epsilon_decays = [0.3]
     
     epochs = 5000
     
     
-    title = ['Experiment 5: Optimise Parameters ( $\gamma$ )\n', 'expResults5']
+    title = ['Experiment 5b: Optimise Parameters (Discount Factor)\n', 'expResults5b']
     
     # run Q-Learning with specified parameters
     mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
@@ -188,68 +218,10 @@ if exp5 == True:
     diagnosticsPlot(plotData, legendData, title, saveFile = False)
 
     # save results
-    np.save('results/expResults5', mean_costs_matrix)
-    pickle.dump( parameter_records, open("results/expParameters5.p", "wb" )) 
-
+    np.save('results/expResults5b', mean_costs_matrix)
+    pickle.dump( parameter_records, open("results/expParameters5b.p", "wb" ))     
     
-#%% Q-Learning Experiment 6: Optimise Parameters (lambda)
-
-if exp6 == True:
-
-    alphas = [0.01]
-    gammas = [0.4]
-    epsilons = [1.0]
-    epsilon_decays = [0.00001, 0.00005, 0.0001, 0.0005, 0.001, 0.005, 0.01]
-    
-    epochs = 5000
-    
-    
-    title = ['Experiment 6: Optimise Parameters ( $\lambda$ )\n', 'expResults6']
-    
-    # run Q-Learning with specified parameters
-    mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
-    
-    # subtract baseline cost and convert to moving average
-    plotData = mean_costs_matrix / baseline
-    plotData = getWindowAverage(plotData, smooth)
-    legendData = parameter_records
-    
-    # generate and save plots
-    diagnosticsPlot(plotData, legendData, title, saveFile = False)
-
-    # save results
-    np.save('results/expResults6', mean_costs_matrix)
-    pickle.dump( parameter_records, open("results/expParameters6.p", "wb" ))     
-    
-    
-#%% Q-Learning Experiment 7: Optimise Parameters (extended lambda)
-
-if exp7 == True:
-
-    alphas = [0.01]
-    gammas = [0.4]
-    epsilons = [1.0]
-    epsilon_decays = [0.1, 0.2, 0.5,]
-    
-    epochs = 5000
-    
-    
-    title = ['Experiment 7: Optimise Parameters ( $\lambda$ )\n', 'expResults7']
-    
-    # run Q-Learning with specified parameters
-    mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
-    
-    # subtract baseline cost and convert to moving average
-    plotData = mean_costs_matrix / baseline
-    plotData = getWindowAverage(plotData, smooth)
-    legendData = parameter_records
-    
-    # generate and save plots
-    diagnosticsPlot(plotData, legendData, title, saveFile = False)
-
-    # save results
-    np.save('results/expResults7', mean_costs_matrix)
-    pickle.dump( parameter_records, open("results/expParameters7.p", "wb" ))     
+      
 #%% Clear Redundant Variables from workspace
 
 ''' KEEP AT END OF SCRIPT'''
