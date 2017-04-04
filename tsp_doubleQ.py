@@ -143,6 +143,7 @@ for k in range(0,int(np.size(mean_costs_matrix2,1))):
             window_ave2[i-1,k] = (np.mean(mean_costs_matrix2[:,k][i-(n-1):i]))
 
 window_ave = np.concatenate((window_ave1,window_ave2),axis=1)
+norm_cost = window_ave/optimal_route_cost
 
 # concatenate list of tour sequences from both experiments
 seqs.extend(seqs2)
@@ -176,11 +177,10 @@ plt.savefig('ultra')
 from tsp_PlotData import *
 
 # Plot line graph ------------------------
-baseline = optimal_route_cost                  # minimum posible cost
 Q_learning = ['singleQ','doubleQ']
 title = 'singleQ vs dobleQ learning'  # title of graph
     
-plotLines(window_ave,Q_learning,baseline,title)
+plotLines(norm_cost,Q_learning,title)
 
 #%%
 
