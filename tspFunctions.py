@@ -109,7 +109,7 @@ def qLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_stat
     
 
 
-''' Doble Q-learning'''
+''' Double Q-learning'''
 
 def doubleQLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_state_reward):
     

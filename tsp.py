@@ -8,29 +8,29 @@ Created on Sat Mar 25 17:10:03 2017
 
 #%% Select Modules to run
 
-plotting = True
-
+plotting = False
 
 #%% Import libraries & functions
 
 # import libraries
 import numpy as np
-from scipy import *
+#from scipy import *
 import matplotlib.pyplot as plt
 
 # import functions
-from loadTSPmatrix import loadTSPmatrix
-from qLearn import qLearn
+from tspFunctions import *
 
-#%% Load problem and define parameters
+#%% Load problem
 
-file_name = 'tsp_matrices/att48_d.csv'
-int_R = loadTSPmatrix(file_name)
+distances_file = 'tsp_matrices/toy_d.csv'
+optimal_route_file = 'tsp_matrices/toy_s.csv'
+
+int_R, optimal_route, optimal_route_cost =  loadTSPmatrix(distances_file, optimal_route_file)
+
+#%% Define parameters
 
 epochs = 200 # init epochs count
 start = 0 # define start point at row 0
-
-max_iters = 9999 # redundant? Consider removing
 goal_state_reward = 100
 
 alphas = np.array([0.3]).astype('float32')
@@ -40,20 +40,17 @@ epsilon_decays = np.array([0.01]).astype('float32')
 
 sampling_sampling_runs = 5
 
-''' 
-#   ***Comment in to prompt selection of learning parameters for Q Learning***
+##Comment in to prompt selection of learning parameters for Q Learning***
+#ans = input("Use default values for alpha(%s), gamma(%s), epsilon(%s), epsilon decay factor(%.4f), and goal state reward (%s)? [y/n] > "\
+#            % (alpha, gamma, epsilon, epsilon_decay, goal_state_reward)) #Define Learning Hyper Parameters
+#        
+#if ans != "y":     
+#    alpha = float(input("alpha value (0-1): ")) 
+#    gamma = float(input("gamma value (0-1): "))  
+#    epsilon = float(input("epsilon value (0-1): ")) 
+#    epsilon_decay = float(input("epsilon decay factor (0-1): ")) 
+#    goal_state_reward = int(input("reward for reaching goal state: "))    
 
-ans = input("Use default values for alpha(%s), gamma(%s), epsilon(%s), epsilon decay factor(%.4f), and goal state reward (%s)? [y/n] > "\
-            % (alpha, gamma, epsilon, epsilon_decay, goal_state_reward)) #Define Learning Hyper Parameters
-        
-if ans != "y":     
-    alpha = float(input("alpha value (0-1): ")) 
-    gamma = float(input("gamma value (0-1): "))  
-    epsilon = float(input("epsilon value (0-1): ")) 
-    epsilon_decay = float(input("epsilon decay factor (0-1): ")) 
-    #max_iters = int(input("max state transitions per epoch (0-1): ")) # redundant? Consider removing
-    goal_state_reward = int(input("reward for reaching goal state: "))    
-'''
 
 #%% Q-Learning
 
@@ -75,7 +72,7 @@ for a in range(0, np.size(alphas)):
 
                 for sampling_run in range (0, sampling_sampling_runs):
                 
-                    epoch_costs, trans_seqs, _ = qLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_state_reward, max_iters)
+                    epoch_costs, trans_seqs, _ = qLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_state_reward)
                     
                     # record all sequences followed in current sampling_run
                     for epoch in range(0, epochs):
@@ -87,48 +84,56 @@ for a in range(0, np.size(alphas)):
                     # calculate mean costs across all 'sampling_runs'
                     mean_costs = np.mean(costs_matrix, 1)
                  
-                ps_dic[loop_idx] = ('Epsilon Decay = %.2f' % epsilon_decay) 
+                ps_dic[loop_idx] = (r'$\alpha = %.4f$, $\gamma = %.4f$, $\epsilon = %.4f$, $\lambda = %.4f$' % (alpha, gamma, epsilon, epsilon_decay)) 
                 #ps_dic[loop_idx] = ('A [%.2f], G [%.2f], E [%.2f], D [%.4f]' % (alpha, gamma, epsilon, epsilon_decay))   
                 mean_costs_matrix[:, loop_idx] = mean_costs; loop_idx +=1
 
-np.save('ultraParameters', alphas)  
-np.save('ultraResults', mean_costs_matrix)                
+
+#np.save('file_name', mean_costs_matrix)                
             
 
 #%% Clear Redundant Variables from workspace
 
 # clear input variables
-del start, epoch, epochs, sampling_sampling_runs, max_iters, goal_state_reward
+del start, epoch, epochs, sampling_sampling_runs, goal_state_reward
 
 # clear any variables created solely for 'looping' purposes
-del file_name, a, alpha, e, epsilon, g, gamma, d,  epsilon_decay , sampling_run, loop_idx
+del a, alpha, e, epsilon, g, gamma, d,  epsilon_decay , sampling_run, loop_idx
 
 # clear non-aggregate metrics variables
-del trans_seqs, epoch_costs, costs_matrix, mean_costs, euler_gamma, pi
+del trans_seqs, epoch_costs, costs_matrix, mean_costs
 
-
+# euler_gamma, pi
 # %% Calculates average cost of previous epochs (up to 'n' previous epochs)
 
-n = 20
-window_ave = np.zeros_like(mean_costs_matrix)
-for k in range(0,int(np.size(mean_costs_matrix,1))):
-    for i in range(1,int(np.size(mean_costs_matrix[:,k])+1)):
-        if i<n-1:
-            window_ave[i-1,k] = (np.mean(mean_costs_matrix[:,k][0:i]))
-        else:
-            window_ave[i-1,k] = (np.mean(mean_costs_matrix[:,k][i-(n-1):i]))
+# subtract optimal route baseline from cost data
+plotData = mean_costs_matrix - optimal_route_cost
+smoothing = 20
+plotData = getWindowAverage(plotData, smoothing)
+
+#n = 20
+#window_ave = np.zeros_like(plotData)
+#for k in range(0,int(np.size(plotData,1))):
+#    for i in range(1,int(np.size(plotData[:,k])+1)):
+#        if i<n-1:
+#            window_ave[i-1,k] = (np.mean(plotData[:,k][0:i]))
+#        else:
+#            window_ave[i-1,k] = (np.mean(plotData[:,k][i-(n-1):i]))
 
 
 #%%  Plot Data
 
 if plotting == False:
     plt.figure(figsize=(15,10))
-    plt.plot(window_ave)
+    plt.plot(plotData)
+    plt.ylim(ymin=0)
     plt.legend(ps_dic.values())
-    plt.savefig('ultra')
+    plt.ylabel('Cost Above Optimal')
+    plt.xlabel('Epochs')
+    plt.title('Results')
+    #plt.savefig('fig_name')
 
 #%%
-
 
 if plotting == True:
 
