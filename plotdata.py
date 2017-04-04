@@ -316,7 +316,7 @@ def diagnosticsPlot(plotData, legendData, title, saveFile):
     plt.plot(plotData)
     plt.title(title[0], fontsize = 20, style = 'normal', fontname = 'cambria')
     plt.xlabel('Epochs', fontsize = 17, style = 'italic', fontname = 'cambria')
-    plt.ylabel('Cost Difference vs Optimal Tour', fontsize = 17, style = 'italic', fontname = 'cambria')
+    plt.ylabel(' Cost Ratio ( agent / optimal )', fontsize = 17, style = 'italic', fontname = 'cambria')
     plt.legend(legendData.values(), fontsize= 12)
     plt.grid()       
 

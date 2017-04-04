@@ -58,7 +58,7 @@ if exp1 == True:
     mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
     
     # subtract baseline cost and convert to moving average
-    plotData = mean_costs_matrix - baseline
+    plotData = mean_costs_matrix / baseline
     plotData = getWindowAverage(plotData, smooth)
     legendData = parameter_records
     
@@ -88,7 +88,7 @@ if exp2 == True:
     mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
     
     # subtract baseline cost and convert to moving average
-    plotData = mean_costs_matrix - baseline
+    plotData = mean_costs_matrix / baseline
     plotData = getWindowAverage(plotData, smooth)
     legendData = parameter_records
     
@@ -118,7 +118,7 @@ if exp3 == True:
     mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
     
     # subtract baseline cost and convert to moving average
-    plotData = mean_costs_matrix - baseline
+    plotData = mean_costs_matrix / baseline
     plotData = getWindowAverage(plotData, smooth)
     legendData = parameter_records
     
@@ -148,7 +148,7 @@ if exp4 == True:
     mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
     
     # subtract baseline cost and convert to moving average
-    plotData = mean_costs_matrix - baseline
+    plotData = mean_costs_matrix / baseline
     plotData = getWindowAverage(plotData, smooth)
     legendData = parameter_records
     
@@ -160,7 +160,7 @@ if exp4 == True:
     #pickle.dump( parameter_records, open("results/expParameters4.p", "wb" ))                    
 
 
-#%% Q-Learning Experiment 5: Optimise Parameters A
+#%% Q-Learning Experiment 5: Optimise Parameters (gamma)
 
 if exp5 == True:
 
@@ -172,13 +172,13 @@ if exp5 == True:
     epochs = 5000
     
     
-    title = ['Experiment 5 Optimise Parameters ( $\gamma$ )\n', 'expResults4']
+    title = ['Experiment 5: Optimise Parameters ( $\gamma$ )\n', 'expResults5']
     
     # run Q-Learning with specified parameters
     mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
     
     # subtract baseline cost and convert to moving average
-    plotData = mean_costs_matrix - baseline
+    plotData = mean_costs_matrix / baseline
     plotData = getWindowAverage(plotData, smooth)
     legendData = parameter_records
     
