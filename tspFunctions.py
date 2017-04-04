@@ -50,7 +50,7 @@ def qLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_stat
         visited = np.ones(np.size(R,1)) # init list to track visited states (1==univisted, 0==visited)
         transitions = 0 # init step transitions
         cost = 0 # init cost transitions
-        goal = False #init goal checking variable (when goal==True, goal has been met)
+        goal = False #init goal checking variable (when goal==True, goal has been met and loop can max_iters)
         z = 0 # hack to ensure 'if' inside while loop can only be true once
     
         
@@ -133,7 +133,7 @@ def doubleQLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goa
         visited = np.ones(np.size(R,1)) # init list to track visited states (1==univisted, 0==visited)
         transitions = 0 # init step transitions
         cost = 0 # init cost transitions
-        goal = False #init goal checking variable (when goal==True, goal has been met)
+        goal = False #init goal checking variable (when goal==True, goal has been met and loop can max_iters)
         z = 0 # hack to ensure 'if' inside while loop can only be true once
     
         
@@ -173,7 +173,7 @@ def doubleQLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goa
             
                 # update visited and goal variables
                 visited[s] = 0 # the current state is marked as visited (RG: move to top of loop (otherwise counting out of sync???))
-                goal = (s == end)  # check if the end point has been reached (RG: what is the effect of having a max iterations in this part of the loop on how Q gets updated?)    
+                goal = (s == end or transitions == max_iters)  # check if the end point has been reached (RG: what is the effect of having a max iterations in this part of the loop on how Q gets updated?)    
             
                 # ADD: increment operation to count steps
             
@@ -204,7 +204,7 @@ def doubleQLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goa
             
                 # update visited and goal variables
                 visited[s] = 0 # the current state is marked as visited (RG: move to top of loop (otherwise counting out of sync???))
-                goal = (s == end)  # check if the end point has been reached (RG: what is the effect of having a max iterations in this part of the loop on how Q gets updated?)    
+                goal = (s == end or transitions == max_iters)  # check if the end point has been reached (RG: what is the effect of having a max iterations in this part of the loop on how Q gets updated?)    
             
                 # ADD: increment operation to count steps
             
@@ -230,42 +230,107 @@ def doubleQLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goa
 
 ''' Load TSP Problems Matrix'''
     
-def loadTSPmatrix(file_name):
+#def loadTSPmatrix(file_name):
+#    
+#    #import numpy as np
+#    #import pandas as pd
+#    
+#    matrix = pd.read_csv(file_name, header=None)
+#    matrix = matrix.as_matrix().astype('float32')
+#    
+#    dimensions = matrix.shape[0]
+#    
+#    # changes distances to negative values to represent costs
+#    for i in range(0, dimensions):
+#        for j in range(0, dimensions):
+#            matrix[i, j] = 0 - matrix[i, j] 
+#            
+#    # add additional colum and row to array for returning to start state
+#    row = np.array([0]*dimensions)
+#    col = np.array([0]*(dimensions+1))
+#    matrix = np.row_stack((matrix,row)) 
+#    matrix = np.column_stack((matrix,col)) 
+#    
+#    # set 'diagonol' to nan
+#    for i in range(0, dimensions):
+#        matrix[i, i] = np.nan
+#    
+#    # add end row of nan values    
+#    matrix[:,-1] = np.nan
+#    
+#    # set end column to nan
+#    matrix[:,-1] = np.nan
+#
+#    # set end row to nan (with exception of first element)
+#    matrix[-1, 1:-1] = np.nan
+#    
+#    return matrix
     
-    #import numpy as np
-    #import pandas as pd
+def loadTSPmatrix(distances_file, optimal_route_file):
+
+    # LOAD DISTANCES AND CREATE R MATRIX
+    R_matrix = pd.read_csv(distances_file, header=None)
+    R_matrix = R_matrix.as_matrix().astype('float32')
     
-    matrix = pd.read_csv(file_name, header=None)
-    matrix = matrix.as_matrix().astype('float32')
-    
-    dimensions = matrix.shape[0]
+    dimensions = R_matrix.shape[0]
     
     # changes distances to negative values to represent costs
     for i in range(0, dimensions):
         for j in range(0, dimensions):
-            matrix[i, j] = 0 - matrix[i, j] 
+            R_matrix[i, j] = 0 - R_matrix[i, j] 
             
     # add additional colum and row to array for returning to start state
     row = np.array([0]*dimensions)
     col = np.array([0]*(dimensions+1))
-    matrix = np.row_stack((matrix,row)) 
-    matrix = np.column_stack((matrix,col)) 
+    R_matrix = np.row_stack((R_matrix,row)) 
+    R_matrix = np.column_stack((R_matrix,col)) 
     
     # set 'diagonol' to nan
     for i in range(0, dimensions):
-        matrix[i, i] = np.nan
+        R_matrix[i, i] = np.nan
     
     # add end row of nan values    
-    matrix[:,-1] = np.nan
+    R_matrix[:,-1] = np.nan
     
     # set end column to nan
-    matrix[:,-1] = np.nan
-
+    R_matrix[:,-1] = np.nan
+    
     # set end row to nan (with exception of first element)
-    matrix[-1, 1:-1] = np.nan
+    R_matrix[-1, 1:-1] = np.nan
     
-    return matrix
+    # LOAD OPTIMAL ROUTE AND CALCULATE COST
+    optimal_route_df = pd.read_csv(optimal_route_file, header=None)
     
+    # convert to route indexing from zero!
+    optimal_route_df = optimal_route_df - 1
+    
+    optimal_route = []
+    tour_cost = 0
+    for i in range(0, len(optimal_route_df)):
+        optimal_route.append(int(optimal_route_df[0][i]))
+    
+    for i in range(0, len(optimal_route)-1):
+        
+        # from
+        from_node = optimal_route[i]
+        # to
+        to_node = optimal_route[i+1]
+        
+        # cost of single move from ith node to jth node
+        trip_cost = R_matrix[from_node, to_node]
+        
+        # update cummulative cost of tour
+        tour_cost += trip_cost
+        
+        # prints optimal route and costs step by step 
+        #print('from %s to %s, trip cost = %d, total tour cost = %d' % (from_node, to_node, trip_cost, tour_cost))
+        
+    tour_cost = abs(tour_cost)
+    
+    return R_matrix, optimal_route, tour_cost  
+
+
+
 
 ''' Return Window Average'''    
 
