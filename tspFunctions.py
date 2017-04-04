@@ -2,7 +2,7 @@
 """
 Created on Thu Mar 30 18:00:36 2017
 
-@author: Ronan
+@author: Ronan and Miguel
 """
 
 ''' e-greedy policy'''
@@ -11,6 +11,14 @@ import numpy as np
 import random
 from copy import deepcopy
 import pandas as pd
+
+
+def loadCoordenates(file_name_xy):
+    
+    coordenates = (pd.read_csv(file_name_xy, header=None))*100000
+    coordenates = coordenates.as_matrix().astype('float32')
+    return coordenates
+
 
 def epsilonGreedy(epsilon, s, Q, A):
     

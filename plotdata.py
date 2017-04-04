@@ -5,14 +5,17 @@ Created on Tue Mar 28 16:05:31 2017
 @author: miguelesteras
 """
 
+# Import functions and dependencies
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
+import collections
+import numpy as np
+import matplotlib.pyplot as plt
+from tspFunctions import loadCoordenates
+
 
 def heatmap(grid,a,b):
-    
-    # import dependecies
-    import numpy as np
-    import matplotlib.pyplot as plt
-    
+      
     # define font style for axes and title
     axis_font = {'color':  'black',         
                     'weight': 500,
@@ -31,15 +34,7 @@ def heatmap(grid,a,b):
 
 
 
-
 def plotFewRoutes(seqs,file_xy,variable):
-
-    # import dependencies
-    import collections
-    import numpy as np
-    import matplotlib.pyplot as plt
-    from loadCoordenates import loadCoordenates
-
 
     axis_font   = {'color':  'black',        # define font for axis labels
                    'weight': 500,
@@ -125,13 +120,6 @@ def plotFewRoutes(seqs,file_xy,variable):
 
 def plotManyRoutes(seqs,file_xy,variable):
 
-    # import dependencies
-    import collections
-    import numpy as np
-    import matplotlib.pyplot as plt
-    from loadCoordenates import loadCoordenates
-
-
     axis_font   = {'color':  'black',        # define font for axis labels
                    'weight': 500,
                    'size': 18 }
@@ -181,12 +169,19 @@ def plotManyRoutes(seqs,file_xy,variable):
             path = np.asarray([coordenates[x,:] for x in paths[0:-1,k]])
             width = 8*(paths[-1,k]/max(paths[-1,:]))
             plt.plot(path[:,0],path[:,1], linestyle = '-', c='gray', 
-                     linewidth=width, alpha=0.2, zorder=2, label ='other path ' + np.array_str(paths[0:-1,k]))
+                     linewidth=width, alpha=0.2, zorder=2, label ='other paths')
        # plot preferred path
         path = np.asarray([coordenates[x,:] for x in paths[0:-1,0]])
         plt.plot(path[:,0],path[:,1], linestyle = '-', c='orange', 
-                 linewidth=8, alpha=0.8, zorder=2, label='best path ' + np.array_str(paths[0:-1,0]))
-          
+                 linewidth=8, alpha=0.8, zorder=2, label='best path')
+        
+        # Add a legend
+        legend = plt.legend(loc='upper right', shadow=False,fontsize= 20)
+        legend.get_frame().set_facecolor('whitesmoke')  # legend background
+        legend.get_frame().set_edgecolor('lightgray')   # legend edge color
+        for text in legend.get_texts[0:2]:                 # text in legend
+            plt.setp(text)
+
         # plot states/cities
         plt.scatter(coordenates[0:-1,0],coordenates[0:-1,1],
                      c='white', s=800, 
@@ -207,10 +202,6 @@ def plotManyRoutes(seqs,file_xy,variable):
     
 def plotBrokenLines(matrix,variable,baseline,title):
     
-    import matplotlib.gridspec as gridspec
-    import numpy as np
-    import matplotlib.pyplot as plt
-
     axis_font = {'color':  'black',         # define font for axis labels
             'weight': 500,
             'size': 14 }
