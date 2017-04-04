@@ -88,5 +88,6 @@ ENV/
 # Rope project settings
 .ropeproject
 
-# ignore image thumbs
+# Added by RG
 Thumbs.db
+ronsPlayground.py
