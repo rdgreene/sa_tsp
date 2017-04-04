@@ -25,17 +25,17 @@ int_R, optimal_route, optimal_route_cost =  loadTSPmatrix(distances_file, optima
 
 #%% Define parameters
 
-epochs = 1000 # init epochs count
+epochs = 300 # init epochs count
 start = 0 # define start point at row 0
 
 goal_state_reward = 1000
 
-alphas = np.array([0.0001]).astype('float32')
-gammas = np.array([0.01]).astype('float32')
+alphas = np.array([1]).astype('float32')
+gammas = np.array([0.001]).astype('float32')
 epsilons = np.array([0.9]).astype('float32')
-epsilon_decays = np.array([0.0001]).astype('float32')
+epsilon_decays = np.array([0.001]).astype('float32')
 
-sampling_sampling_runs = 1
+sampling_sampling_runs = 2
 
 #%% Q-Learning
 
@@ -148,6 +148,9 @@ for k in range(0,int(np.size(mean_costs_matrix2,1))):
 
 window_ave = np.concatenate((window_ave1,window_ave2),axis=1)
 
+# concatenate list of tour sequences from both experiments
+seqs.extend(seqs2)
+
 #%% Clear Redundant Variables from workspace in double Q
 
 # clear input variables
@@ -188,7 +191,7 @@ plotLines(window_ave,Q_learning,baseline,title)
 # Plot routes ----------------------------
 file_xy = 'tsp_matrices/att48_xy.csv'
 
-plotManyRoutes(seqs,file_xy,alphas)
+plotManyRoutes(seqs,file_xy,Q_learning)
     
 
 
