@@ -277,9 +277,6 @@ def plotLines(matrix,variable,baseline,title):
     axis_font = {'color':  'black',         # define font for axis labels
             'weight': 500,
             'size': 16 }
-    title_font = {'color':  'black',        # define font for tittle
-            'weight': 500,
-            'size': 20 }
     
     plt.figure( figsize=(15, 10))
     
@@ -296,7 +293,7 @@ def plotLines(matrix,variable,baseline,title):
     plt.grid(b=True, which='major', color='lightgray', linestyle='-')    # grid on
     plt.xlabel('Epochs', fontdict=axis_font)                         # x-label
     plt.ylabel('Cost', fontdict=axis_font)                           # y-label
-    plt.suptitle(title, y=1, fontdict=title_font) # title
+    plt.suptitle(title, y=1, fontsize = 20, style = 'normal', weight=500) # title
     
     # Add a legend
     legend = plt.legend(loc='upper right', shadow=False,fontsize= 16)

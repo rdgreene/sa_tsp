@@ -24,7 +24,7 @@ from tspFunctions import qLearn
 file_name = 'tsp_matrices/att48_d.csv'
 int_R = loadTSPmatrix(file_name)
 
-epochs = 300 # init epochs count
+epochs = 500 # init epochs count
 start = 0 # define start point at row 0
 
 goal_state_reward = 1000
@@ -34,7 +34,7 @@ gammas = np.array([0.3]).astype('float32')
 epsilons = np.array([0.9]).astype('float32')
 epsilon_decays = np.array([0.01]).astype('float32')
 
-sampling_sampling_runs = 5
+sampling_sampling_runs = 2
 
 #%% Q-Learning
 
@@ -75,28 +75,17 @@ np.save('ultraParameters', alphas)
 np.save('ultraResults', mean_costs_matrix)                
             
 
-# %% Calculates average cost of previous epochs (up to 'n' previous epochs)
-
-n = 20
-window_ave = np.zeros_like(mean_costs_matrix)
-for k in range(0,int(np.size(mean_costs_matrix,1))):
-    for i in range(1,int(np.size(mean_costs_matrix[:,k])+1)):
-        if i<n-1:
-            window_ave[i-1,k] = (np.mean(mean_costs_matrix[:,k][0:i]))
-        else:
-            window_ave[i-1,k] = (np.mean(mean_costs_matrix[:,k][i-(n-1):i]))
-
-
-#%% Clear metrics variables
+#%% Clear some metrics variables
 del trans_seqs, epoch_costs, costs_matrix, mean_costs, euler_gamma, pi
-del mean_costs_matrix, epoch, ps_dic, loop_idx, a, d, e, g
+del epoch, ps_dic, loop_idx, a, d, e, g, sampling_run
+
 
 #%% doubleQ-Learning
 
 # init variables for recording Q Learning metrics
 seqs2 = [] # list of lists, where each inner list records the state transitions made in an epoch. State transitions for each epoch in each sampling_run are recorded.
 costs_matrix = np.zeros((epochs, sampling_sampling_runs)) # matrix containing epoch cost vectors for each sampling sampling_run
-mean_costs_matrix = np.zeros((epochs, np.size(alphas)*np.size(gammas)*np.size(epsilons)*np.size(epsilon_decays))) # contains mean of costs for all sampling_runs of each parameter setting
+mean_costs_matrix2 = np.zeros((epochs, np.size(alphas)*np.size(gammas)*np.size(epsilons)*np.size(epsilon_decays))) # contains mean of costs for all sampling_runs of each parameter setting
 ps_dic = {} # init; parameter search dictionary
 loop_idx = 0 # init
 
@@ -131,17 +120,32 @@ np.save('ultraParameters', alphas)
 np.save('ultraResults2', mean_costs_matrix2)                
             
 
+
 # %% Calculates average cost of previous epochs (up to 'n' previous epochs)
 
+# singleQ-learning
+n = 20
+window_ave1 = np.zeros_like(mean_costs_matrix)
+for k in range(0,int(np.size(mean_costs_matrix,1))):
+    for i in range(1,int(np.size(mean_costs_matrix[:,k])+1)):
+        if i<n-1:
+            window_ave1[i-1,k] = (np.mean(mean_costs_matrix[:,k][0:i]))
+        else:
+            window_ave1[i-1,k] = (np.mean(mean_costs_matrix[:,k][i-(n-1):i]))
+
+del k, i
+
+# doubleQ-learning
 n = 20
 window_ave2 = np.zeros_like(mean_costs_matrix2)
 for k in range(0,int(np.size(mean_costs_matrix2,1))):
     for i in range(1,int(np.size(mean_costs_matrix2[:,k])+1)):
         if i<n-1:
-            window_ave[i-1,k] = (np.mean(mean_costs_matrix2[:,k][0:i]))
+            window_ave2[i-1,k] = (np.mean(mean_costs_matrix2[:,k][0:i]))
         else:
-            window_ave[i-1,k] = (np.mean(mean_costs_matrix2[:,k][i-(n-1):i]))
+            window_ave2[i-1,k] = (np.mean(mean_costs_matrix2[:,k][i-(n-1):i]))
 
+window_ave = np.concatenate((window_ave1,window_ave2),axis=1)
 
 #%% Clear Redundant Variables from workspace in double Q
 
@@ -150,7 +154,7 @@ del start, epoch, epochs, sampling_sampling_runs, goal_state_reward
 # clear any variables created solely for 'looping' purposes
 del file_name, a, alpha, e, epsilon, g, gamma, d,  epsilon_decay , sampling_run, loop_idx
 # clear non-aggregate metrics variables
-del trans_seqs, epoch_costs, costs_matrix, mean_costs, euler_gamma, pi
+del trans_seqs, epoch_costs, costs_matrix, mean_costs, i, k
 
 
 #%%
@@ -160,47 +164,31 @@ del trans_seqs, epoch_costs, costs_matrix, mean_costs, euler_gamma, pi
 
 #%%  Plot line graph
 
-if plotting == False:
-    plt.figure(figsize=(15,10))
-    plt.plot(window_ave)
-    plt.plot(window_ave2)
-    plt.legend(ps_dic.values())
-    plt.savefig('ultra')
+plt.figure(figsize=(15,10))
+plt.plot(window_ave)
+plt.plot(window_ave2)
+plt.legend(ps_dic.values())
+plt.savefig('ultra')
+
+#%% Plot performance graphs
+
+# import dependencies
+from plotdata import plotBrokenLines, plotLines, plotManyRoutes, heatmap
+
+# Plot line graph ------------------------
+baseline = 40000                  # minimum posible cost
+Q_learning = ['singleQ','doubleQ']
+title = 'singleQ vs dobleQ learning'  # title of graph
+    
+plotLines(window_ave,Q_learning,baseline,title)
 
 #%%
 
-if plotting == True:
-
-    # import dependencies
-    from plotdata import plotBrokenLines, plotLines, plotRoutes, heatmap
-    
-    # Plot line graph ------------------------
-    baseline = 40000                  # minimum posible cost
-    variable = alphas               # variable to explore
-    title = 'Learning Alpha Search'  # title of graph
-    
-    plotBrokenLines(window_ave,alphas,baseline,title)
-    
-    plotLines(window_ave,alphas,baseline,title)
-    
-    
-#%% 
-
-    # Plot routes ----------------------------
+# Plot routes ----------------------------
 file_xy = 'tsp_matrices/att48_xy.csv'
 
 plotManyRoutes(seqs,file_xy,alphas)
-
-
-    # HeatMap with interpolation --------------   
-a = 'a'                         # string with name of variable in x
-b = 'b'                         # string with nama of variable in y
-np.random.seed(0)               # just for demo
-grid = np.random.rand(8, 8)     # np.array with performance values
-
-heatmap(grid,a,b)               # plot heatmap
-
-
+    
 
 
 
