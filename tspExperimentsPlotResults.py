@@ -111,4 +111,4 @@ legendData =  subDict
 title = ['Experiment 4: Q-Learning with Different Decay Rates\n', 'expResults4']
 
 # plot and save
-diagnosticsPlot(plotData, legendData, title, saveFile = False)
+diagnosticsPlot(plotData, legendData, title, saveFile = True)

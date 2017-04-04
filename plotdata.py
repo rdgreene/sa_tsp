@@ -321,5 +321,5 @@ def diagnosticsPlot(plotData, legendData, title, saveFile):
     plt.grid()       
 
     if saveFile == True:
-        plt.savefig(title[1])
+        plt.savefig('results/' + title[1])
                          

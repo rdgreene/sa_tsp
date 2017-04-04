@@ -72,8 +72,8 @@ diagnosticsPlot(plotData, legendData, title, saveFile = False)
 #plt.savefig(title)
 
 # save results
-#np.save('expResults1', mean_costs_matrix)
-#pickle.dump(parameter_records, open( "expParameters1.p", "wb" ))   
+#np.save('results/expResults1', mean_costs_matrix)
+#pickle.dump(parameter_records, open( "results/expParameters1.p", "wb" ))   
 
 
 #%% Q-Learning Experiment 2: Vary Learning Rate (Alpha)
@@ -108,8 +108,8 @@ diagnosticsPlot(plotData, legendData, title, saveFile = False)
 #plt.savefig(title)
 
 # save results
-#np.save('expResults2', mean_costs_matrix)
-#pickle.dump(parameter_records, open( "expParameters2.p", "wb" ))  
+#np.save('results/expResults2', mean_costs_matrix)
+#pickle.dump(parameter_records, open( "results/expParameters2.p", "wb" ))  
 
 
 #%% Q-Learning Experiment 3: Vary Gamma
@@ -144,8 +144,8 @@ diagnosticsPlot(plotData, legendData, title, saveFile = False)
 #plt.savefig(title)
 
 # save results
-#np.save('expResults3', mean_costs_matrix)
-#pickle.dump(parameter_records, open( "expParameters3.p", "wb" ))  
+#np.save('results/expResults3', mean_costs_matrix)
+#pickle.dump(parameter_records, open( "results/expParameters3.p", "wb" ))  
 
 
 #%% Q-Learning Experiment 4: Vary Epsilon Decay
@@ -180,8 +180,8 @@ diagnosticsPlot(plotData, legendData, title, saveFile = False)
 #plt.savefig(title)
 
 # save results
-#np.save('expResults4', mean_costs_matrix)
-#pickle.dump( parameter_records, open("expParameters4.p", "wb" ))                    
+#np.save('results/expResults4', mean_costs_matrix)
+#pickle.dump( parameter_records, open("results/expParameters4.p", "wb" ))                    
 
 
 #%% Clear Redundant Variables from workspace
