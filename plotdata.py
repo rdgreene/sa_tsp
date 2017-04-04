@@ -306,8 +306,8 @@ def diagnosticsPlot(plotData, legendData, title, saveFile):
     plt.title(title[0], fontsize = 20, style = 'normal', fontname = 'cambria')
     plt.xlabel('Epochs', fontsize = 17, style = 'italic', fontname = 'cambria')
     plt.ylabel('Cost Difference vs Optimal Tour', fontsize = 17, style = 'italic', fontname = 'cambria')
-    plt.legend(legendData.values())
-    plt.grid()        
+    plt.legend(legendData.values(), fontsize= 12)
+    plt.grid()       
 
     if saveFile == True:
         plt.savefig(title[1])
