@@ -50,7 +50,7 @@ def qLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_stat
         visited = np.ones(np.size(R,1)) # init list to track visited states (1==univisted, 0==visited)
         transitions = 0 # init step transitions
         cost = 0 # init cost transitions
-        goal = False #init goal checking variable (when goal==True, goal has been met and loop can max_iters)
+        goal = False #init goal checking variable (when goal==True, goal has been met)
         z = 0 # hack to ensure 'if' inside while loop can only be true once
     
         
@@ -133,7 +133,7 @@ def doubleQLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goa
         visited = np.ones(np.size(R,1)) # init list to track visited states (1==univisted, 0==visited)
         transitions = 0 # init step transitions
         cost = 0 # init cost transitions
-        goal = False #init goal checking variable (when goal==True, goal has been met and loop can max_iters)
+        goal = False #init goal checking variable (when goal==True, goal has been met)
         z = 0 # hack to ensure 'if' inside while loop can only be true once
     
         
@@ -173,7 +173,7 @@ def doubleQLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goa
             
                 # update visited and goal variables
                 visited[s] = 0 # the current state is marked as visited (RG: move to top of loop (otherwise counting out of sync???))
-                goal = (s == end or transitions == max_iters)  # check if the end point has been reached (RG: what is the effect of having a max iterations in this part of the loop on how Q gets updated?)    
+                goal = (s == end)  # check if the end point has been reached (RG: what is the effect of having a max iterations in this part of the loop on how Q gets updated?)    
             
                 # ADD: increment operation to count steps
             
@@ -204,7 +204,7 @@ def doubleQLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goa
             
                 # update visited and goal variables
                 visited[s] = 0 # the current state is marked as visited (RG: move to top of loop (otherwise counting out of sync???))
-                goal = (s == end or transitions == max_iters)  # check if the end point has been reached (RG: what is the effect of having a max iterations in this part of the loop on how Q gets updated?)    
+                goal = (s == end)  # check if the end point has been reached (RG: what is the effect of having a max iterations in this part of the loop on how Q gets updated?)    
             
                 # ADD: increment operation to count steps
             

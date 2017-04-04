@@ -24,7 +24,7 @@ from tspFunctions import qLearn
 file_name = 'tsp_matrices/att48_d.csv'
 int_R = loadTSPmatrix(file_name)
 
-epochs = 700 # init epochs count
+epochs = 300 # init epochs count
 start = 0 # define start point at row 0
 
 goal_state_reward = 1000
@@ -89,8 +89,7 @@ for k in range(0,int(np.size(mean_costs_matrix,1))):
 
 #%% Clear metrics variables
 del trans_seqs, epoch_costs, costs_matrix, mean_costs, euler_gamma, pi
-del mean_costs_matrix, epoch, ps_dic, loop_idx 
-
+del mean_costs_matrix, epoch, ps_dic, loop_idx, a, d, e, g
 
 #%% doubleQ-Learning
 
