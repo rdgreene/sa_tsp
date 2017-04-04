@@ -281,7 +281,7 @@ def plotLines(matrix,variable,title):
         plt.plot(matrix[:,i], label=str(variable[i]))
         
     # limit the view of the graphs
-    plt.ylim(0, np.amax(matrix))
+    plt.ylim(1, np.amax(matrix))
 
     # Add a grid, axes labels and tittle
     plt.grid(b=True, which='major', color='lightgray', linestyle='-')   # grid on
@@ -291,8 +291,8 @@ def plotLines(matrix,variable,title):
     
     # Add a legend
     legend = plt.legend(loc='upper right', shadow=False,fontsize= 16)
-    legend.get_frame().set_facecolor('whitesmoke')   # legend background
-    legend.get_frame().set_edgecolor('lightgray')    # legend edge color
+    legend.get_frame().set_facecolor('white')   # legend background
+    legend.get_frame().set_edgecolor('black')    # legend edge color
     for text in legend.get_texts():             # text in legend
         plt.setp(text)
     
