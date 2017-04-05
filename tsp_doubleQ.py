@@ -25,13 +25,13 @@ int_R, optimal_route, optimal_route_cost =  loadTSPmatrix(distances_file, optima
 
 #%% Define parameters
 
-epochs = 300 # init epochs count
+epochs = 500 # init epochs count
 start = 0 # define start point at row 0
 
 goal_state_reward = 1000
 
 alphas = np.array([1]).astype('float32')
-gammas = np.array([0.001]).astype('float32')
+gammas = np.array([0.1]).astype('float32')
 epsilons = np.array([0.9]).astype('float32')
 epsilon_decays = np.array([0.001]).astype('float32')
 
@@ -71,9 +71,6 @@ for a in range(0, np.size(alphas)):
                 ps_dic[loop_idx] = ('Epsilon Decay = %.2f' % epsilon_decay) 
                 #ps_dic[loop_idx] = ('A [%.2f], G [%.2f], E [%.2f], D [%.4f]' % (alpha, gamma, epsilon, epsilon_decay))   
                 mean_costs_matrix[:, loop_idx] = mean_costs; loop_idx +=1
-
-np.save('ultraParameters', alphas)  
-np.save('ultraResults', mean_costs_matrix)                
             
 
 #%% Clear some metrics variables
@@ -163,25 +160,17 @@ del trans_seqs, epoch_costs, costs_matrix, mean_costs, i, k
 ''' Plot performance graphs'''
 
 
-#%%  Plot line graph
-
-plt.figure(figsize=(15,10))
-plt.plot(window_ave)
-plt.plot(window_ave2)
-plt.legend(ps_dic.values())
-plt.savefig('ultra')
-
 #%% Plot performance graphs
 
 # import graph functions
 from tsp_PlotData import *
 
 file_xy = 'tsp_matrices/att48_xy.csv'   # file with coordenates
-Q_learning = ['singleQ','doubleQ']
-title = 'singleQ vs dobleQ learning'    # title of graph
+Q_learning = ['Q-Learning', 'Double Q-Learning']
+title = 'Q-Learning and Double Q-Learning'    # title of graph
 
 # Plot line graph
-plotLines(norm_cost,Q_learning,title)
+plotLines(window_ave2,Q_learning,title)
 
 # Plot routes
 plotManyRoutes(seqs,file_xy,Q_learning)

@@ -30,7 +30,7 @@ goal_state_reward = 1000
 
 alphas = np.array([0.9]).astype('float32')
 gammas = np.array([0.01]).astype('float32')
-epsilons = np.array([0.9]).astype('float32')
+epsilons = np.array([0.5]).astype('float32')
 epsilon_decays = np.array([0.001]).astype('float32')
 
 sampling_sampling_runs = 2

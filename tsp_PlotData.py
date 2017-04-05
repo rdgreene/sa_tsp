@@ -155,7 +155,7 @@ def plotManyRoutes(seqs,file_xy,variable):
         coordenates = loadCoordenates(file_xy)   
         
         # Graph configurations
-        plt.figure(figsize=(20, 20), facecolor='whitesmoke')
+        plt.figure(figsize=(17, 13), facecolor='whitesmoke')
         plt.grid(b=False)
         plt.title(str(variable[i]), y=1.05,fontdict=title_font)
         plt.ylabel('latitud', fontdict=axis_font)
@@ -165,7 +165,7 @@ def plotManyRoutes(seqs,file_xy,variable):
                 
        # plot second most common paths
         path = np.asarray([coordenates[x,:] for x in paths[0:-1,1]])
-        width = 8*(paths[-1,1]/max(paths[-1,:]))
+        width = 10*(paths[-1,1]/max(paths[-1,:]))
         plt.plot(path[:,0],path[:,1], linestyle = '-', c='gray', 
                 linewidth=width, alpha=0.2, zorder=2, label ='other paths')
         
@@ -183,8 +183,8 @@ def plotManyRoutes(seqs,file_xy,variable):
         
         # Add a legend
         legend = plt.legend(loc='upper left', shadow=False,fontsize= 20)
-        legend.get_frame().set_facecolor('whitesmoke')  # legend background
-        legend.get_frame().set_edgecolor('lightgray')   # legend edge color
+        legend.get_frame().set_facecolor('white')  # legend background
+        legend.get_frame().set_edgecolor('black')   # legend edge color
         for text in legend.get_texts():                 # text in legend
             plt.setp(text)
 
