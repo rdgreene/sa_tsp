@@ -23,17 +23,17 @@ int_R, optimal_route, optimal_route_cost =  loadTSPmatrix(distances_file, optima
 
 #%% Define parameters
 
-epochs = 200 # init epochs count
+epochs = 1000 # init epochs count
 start = 0 # define start point at row 0
 
 goal_state_reward = 1000
 
 alphas = np.array([0.9]).astype('float32')
 gammas = np.array([0.01]).astype('float32')
-epsilons = np.array([0.5]).astype('float32')
+epsilons = np.array([1]).astype('float32')
 epsilon_decays = np.array([0.001]).astype('float32')
 
-sampling_sampling_runs = 2
+sampling_sampling_runs = 20
 
 #%% Q-Learning
 
@@ -102,12 +102,12 @@ del trans_seqs, epoch_costs, costs_matrix, mean_costs, mean_costs_matrix
 from tsp_PlotData import *
 
 file_xy = 'tsp_matrices/att48_xy.csv'  # file with coordenates
-variable = ['Agent']                   # variable to explore
-title = ['Tour in the USA']              # title of graph
+variable = ['toy environment parameters', 'USA environment optimum parameters']                   # variable to explore
+title = 'Tour in the USA'             # title of graph
     
 # Plot line graph 
 plotLines(norm_cost,variable,title)
 
 # Plot routes
-plotManyRoutes(seqs,file_xy,title)
+#plotManyRoutes(seqs,file_xy,title)
     

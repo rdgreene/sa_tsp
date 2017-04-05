@@ -170,7 +170,7 @@ Q_learning = ['Q-Learning', 'Double Q-Learning']
 title = 'Q-Learning and Double Q-Learning'    # title of graph
 
 # Plot line graph
-plotLines(window_ave2,Q_learning,title)
+plotLines(norm_cost,Q_learning,title)
 
 # Plot routes
 plotManyRoutes(seqs,file_xy,Q_learning)

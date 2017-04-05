@@ -74,9 +74,9 @@ def plotFewRoutes(seqs,file_xy,variable):
         fig, mapa = plt.subplots()
         mapa.patch.set_facecolor('whitesmoke')
         plt.grid(b=False)
-        plt.title(str(variable[i]), y=1.05,fontdict=title_font)
-        plt.ylabel('latitud', fontdict=axis_font)
-        plt.xlabel('longitud', fontdict=axis_font)
+        plt.title(str(variable[i]), y=1.01,fontdict=title_font)
+        plt.ylabel('latitude', fontdict=axis_font)
+        plt.xlabel('longitude', fontdict=axis_font)
         plt.xticks([], [])
         plt.yticks([], [])
                 
@@ -158,8 +158,8 @@ def plotManyRoutes(seqs,file_xy,variable):
         plt.figure(figsize=(17, 13), facecolor='whitesmoke')
         plt.grid(b=False)
         plt.title(str(variable[i]), y=1.05,fontdict=title_font)
-        plt.ylabel('latitud', fontdict=axis_font)
-        plt.xlabel('longitud', fontdict=axis_font)
+        plt.ylabel('latitude', fontdict=axis_font)
+        plt.xlabel('longitude', fontdict=axis_font)
         plt.xticks([], [])
         plt.yticks([], [])
                 
