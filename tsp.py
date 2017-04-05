@@ -8,7 +8,7 @@ Created on Sat Mar 25 17:10:03 2017
 
 #%% Select Modules to run
 
-plotting = False
+plotting = True
 
 #%% Import libraries & functions
 
@@ -29,16 +29,16 @@ int_R, optimal_route, optimal_route_cost =  loadTSPmatrix(distances_file, optima
 
 #%% Define parameters
 
-epochs = 200 # init epochs count
+epochs = 1000 # init epochs count
 start = 0 # define start point at row 0
 goal_state_reward = 100
 
-alphas = np.array([0.3]).astype('float32')
-gammas = np.array([0.3]).astype('float32')
-epsilons = np.array([0.9]).astype('float32')
-epsilon_decays = np.array([0.01]).astype('float32')
+alphas = np.array([0.1]).astype('float32')
+gammas = np.array([1]).astype('float32')
+epsilons = np.array([1]).astype('float32')
+epsilon_decays = np.array([0.3]).astype('float32')
 
-sampling_sampling_runs = 5
+sampling_sampling_runs = 20
 
 ##Comment in to prompt selection of learning parameters for Q Learning***
 #ans = input("Use default values for alpha(%s), gamma(%s), epsilon(%s), epsilon decay factor(%.4f), and goal state reward (%s)? [y/n] > "\
@@ -107,7 +107,7 @@ del trans_seqs, epoch_costs, costs_matrix, mean_costs
 # %% Calculates average cost of previous epochs (up to 'n' previous epochs)
 
 # subtract optimal route baseline from cost data
-plotData = mean_costs_matrix - optimal_route_cost
+plotData = mean_costs_matrix/optimal_route_cost
 smoothing = 20
 plotData = getWindowAverage(plotData, smoothing)
 
@@ -137,35 +137,17 @@ if plotting == False:
 
 if plotting == True:
 
-    # import dependencies
-    from plotdata import plotBrokenLines, plotLines, plotRoutes, heatmap
+    # import graph functions
+    from tsp_PlotData import *
     
-    # Plot line graph ------------------------
-    baseline = 40000                  # minimum posible cost
-    variable = alphas               # variable to explore
-    title = 'Learning Alpha Search'  # title of graph
-    
-    plotBrokenLines(window_ave,alphas,baseline,title)
-    
-    plotLines(window_ave,alphas,baseline,title)
-    
-    
-    # Plot routes ----------------------------
-    file_xy = 'tsp_matrices/att48_xy.csv'
-    
-    plotManyRoutes(seqs,file_xy,alphas)
-    
-    # HeatMap with interpolation --------------   
-    a = 'a'                         # string with name of variable in x
-    b = 'b'                         # string with nama of variable in y
-    np.random.seed(0)               # just for demo
-    grid = np.random.rand(8, 8)     # np.array with performance values
-    
-    heatmap(grid,a,b)               # plot heatmap
+    file_xy = 'tsp_matrices/toyd_d_xy.csv'  # file with coordenates
+    variable = ['Toy environment']                   # variable to explore
+    title = 'Toy environment'             # title of graph
+        
+    # Plot line graph 
+    plotLines(plotData,variable,title)
 
-
-
-
-
+    # Plot routes
+    plotFewRoutes(seqs,file_xy,title)
 
 

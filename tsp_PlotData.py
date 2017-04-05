@@ -74,7 +74,7 @@ def plotFewRoutes(seqs,file_xy,variable):
         fig, mapa = plt.subplots()
         mapa.patch.set_facecolor('whitesmoke')
         plt.grid(b=False)
-        plt.title(str(variable[i]), y=1.01,fontdict=title_font)
+        plt.title(str(variable), y=1.01,fontdict=title_font)
         plt.ylabel('latitude', fontdict=axis_font)
         plt.xlabel('longitude', fontdict=axis_font)
         plt.xticks([], [])
@@ -83,13 +83,13 @@ def plotFewRoutes(seqs,file_xy,variable):
         # plot preferred path
         path = np.asarray([coordenates[x,:] for x in paths[0:-1,0]])
         plt.plot(path[:,0],path[:,1], linestyle = '-', c='orange', 
-                 linewidth=8, alpha=0.8, zorder=2, label='best path ' + np.array_str(paths[0:-1,0]))
+                 linewidth=8, alpha=0.9, zorder=2, label='best path ' + np.array_str(paths[0:-1,0]))
         # plot other paths
         for k in range(1,np.size(paths,1)):                         
             path = np.asarray([coordenates[x,:] for x in paths[0:-1,k]])
-            width = 8*(paths[-1,k]/max(paths[-1,:]))
+            width = 40*(paths[-1,k]/max(paths[-1,:]))
             plt.plot(path[:,0],path[:,1], linestyle = '-', c='gray', 
-                     linewidth=width, alpha=0.8, zorder=2, label ='other path ' + np.array_str(paths[0:-1,k]))
+                     linewidth=width, alpha=0.9, zorder=2, label ='other path ' + np.array_str(paths[0:-1,k]))
         
        # Add a legend
         legend = plt.legend(bbox_to_anchor=(1, 1), loc='upper left', shadow=False,fontsize= 10)
