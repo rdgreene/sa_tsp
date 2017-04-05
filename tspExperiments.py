@@ -20,8 +20,8 @@ import pickle
 exp1 = False
 exp2 = False
 exp3 = False
-exp4 = False
-exp5a = True
+exp4 = True
+exp5a = False
 exp5b = False
 
 
@@ -139,7 +139,7 @@ if exp4 == True:
     alphas = [0.7]
     gammas = [0.8]
     epsilons = [1.0]
-    epsilon_decays = [0.00001, 0.0001, 0.001, 0.01, 0.05, 0.01, 0.3]
+    epsilon_decays = [0.00001, 0.0001, 0.001, 0.01, 0.05, 0.1, 0.3]
     
     epochs = 10000
     
