@@ -12,7 +12,7 @@ Created on Sat Mar 25 17:10:03 2017
 import numpy as np
 import matplotlib.pyplot as plt
 from tspFunctions import *
-from plotdata import *
+from tsp_PlotData import *
 import pickle
 
 #%% Define 'Experiments' to run
@@ -20,10 +20,10 @@ import pickle
 exp1 = False
 exp2 = False
 exp3 = False
-exp4 = True
+exp4 = False
 exp5a = False
 exp5b = False
-
+exp6 = True
 
 #%% Load problem and define parameters
 
@@ -221,7 +221,60 @@ if exp5b == True:
     np.save('results/expResults5b', mean_costs_matrix)
     pickle.dump( parameter_records, open("results/expParameters5b.p", "wb" ))     
     
-      
+#%% Q-Learning Experiment 6: Change Reward
+
+if exp6 == True:
+
+    alphas = [0.1]
+    gammas = [1.0]
+    epsilons = [1.0]
+    epsilon_decays = [0.3]
+    
+    epochs = 500
+     
+    title = ['Experiment 6: Q-Learning with Different Goal State Rewards\n', 'expResults6']
+    
+    # run Q-Learning with specified parameters
+    goal_reward = 0
+    mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
+    trackingMatrix = mean_costs_matrix
+    
+    goal_reward = 100
+    mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
+    trackingMatrix = np.column_stack((trackingMatrix, mean_costs_matrix))
+    
+    goal_reward = 200
+    mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
+    trackingMatrix = np.column_stack((trackingMatrix, mean_costs_matrix))
+    
+    goal_reward = 500
+    mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
+    trackingMatrix = np.column_stack((trackingMatrix, mean_costs_matrix))
+    
+    goal_reward = 1000
+    mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
+    trackingMatrix = np.column_stack((trackingMatrix, mean_costs_matrix))
+    
+    goal_reward = 2000
+    mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
+    trackingMatrix = np.column_stack((trackingMatrix, mean_costs_matrix))
+    
+    goal_reward = 5000
+    mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
+    trackingMatrix = np.column_stack((trackingMatrix, mean_costs_matrix))
+    
+    # subtract baseline cost and convert to moving average
+    plotData = trackingMatrix / baseline
+    plotData = getWindowAverage(plotData, smooth)
+    legendData = {0 : 'goal reward = 0', 1 : 'goal reward = 100', 2 : 'goal reward = 200', 3 : 'goal reward = 500', 4 : 'goal reward = 1000', 5 : 'goal reward = 2000', 6 : 'goal reward = 5000' }
+    
+    # generate and save plots
+    diagnosticsPlot(plotData, legendData, title, saveFile = False)
+
+    # save results
+    np.save('results/expResults6', trackingMatrix)
+    pickle.dump( legendData, open("results/expParameters6.p", "wb" ))       
+
 #%% Clear Redundant Variables from workspace
 
 ''' KEEP AT END OF SCRIPT'''

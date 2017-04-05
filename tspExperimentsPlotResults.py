@@ -11,7 +11,7 @@ Ronan's playground, nobody else allowed on the rides ;)
 import numpy as np
 import matplotlib.pyplot as plt
 from tspFunctions import *
-from plotdata import *
+from tsp_PlotData import *
 import pickle
 
 #%% Load Experiments File
@@ -118,13 +118,13 @@ diagnosticsPlot(plotData, legendData, title, saveFile = True)
 #%% Q-Learning Experiment 5a: Optimise Parameters (learning rate)
 
 # choose subset of problems for final plot
-subset = [0,1,2,3,4,5,6,7]
+subset = [0, 1, 2, 5, 7]
 subDict = {}
 
 # load and prepare plotting data
 plotData = np.load('results/expResults5a.npy')
 plotData = plotData / optimal_route_cost
-plotData = plotData[:,subset] # select results of interest
+plotData = plotData[0:1000,subset] # select results of interest
 smooth = 50; plotData = getWindowAverage(plotData, smooth)
 legendData =  pickle.load( open('results/expParameters5a.p', 'rb' ))
 
@@ -140,10 +140,10 @@ title = ['Experiment 5a: Optimise Parameters (Learning Rate)\n', 'expResults5a']
 # plot and save
 diagnosticsPlot(plotData, legendData, title, saveFile = True)
 
-#%% Q-Learning Experiment 5a: Optimise Parameters (dscount factor)
+#%% Q-Learning Experiment 5b: Optimise Parameters (dscount factor)
 
 # choose subset of problems for final plot
-subset = [0,1,2,3,4,5,6,7]
+subset = [0, 1, 2, 5, 7]
 subDict = {}
 
 # load and prepare plotting data
@@ -161,6 +161,31 @@ for d in subset:
 legendData =  subDict
 
 title = ['Experiment 5b: Optimise Parameters (Discount Factor)\n', 'expResults5b']
+
+# plot and save
+diagnosticsPlot(plotData, legendData, title, saveFile = True)
+
+#%% Q-Learning Experiment 6: Change Reward
+
+# choose subset of problems for final plot
+subset = [0, 1, 2, 3, 4]
+subDict = {}
+
+# load and prepare plotting data
+plotData = np.load('results/expResults6.npy')
+plotData = plotData / optimal_route_cost
+plotData = plotData[:,subset] # select results of interest
+smooth = 50; plotData = getWindowAverage(plotData, smooth)
+legendData =  pickle.load( open('results/expParameters6.p', 'rb' ))
+
+# update legendData to reflect subset of results being plotted
+newIdx = 0
+for d in subset:
+    subDict[newIdx] = legendData[d]
+    newIdx += 1  
+legendData =  subDict
+
+title = ['Experiment 6: Q-Learning with Different Goal State Rewards\n', 'expResults6']
 
 # plot and save
 diagnosticsPlot(plotData, legendData, title, saveFile = True)
