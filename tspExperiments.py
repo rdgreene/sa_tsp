@@ -230,7 +230,7 @@ if exp6 == True:
     epsilons = [1.0]
     epsilon_decays = [0.3]
     
-    epochs = 500
+    epochs = 5000
      
     title = ['Experiment 6: Q-Learning with Different Goal State Rewards\n', 'expResults6']
     

@@ -31,7 +31,7 @@ smooth = 50; plotData = getWindowAverage(plotData, smooth)
 legendData =  pickle.load( open('results/expParameters1.p', 'rb' ))
 
 # plot
-title = ['Experiment 1: Q-Learning with Default Parameters\n', 'expResults1']
+title = ['Q-Learning with Default Parameters\n', 'expResults1']
 
 # plot and save
 diagnosticsPlot(plotData, legendData, title, saveFile = True)
@@ -57,7 +57,7 @@ for d in subset:
 legendData =  subDict
 
 #plot
-title = ['Experiment 2: Q-Learning with Different Learning Rates\n', 'expResults2']
+title = ['Q-Learning with Different Learning Rates\n', 'expResults2']
 
 # plot and save
 diagnosticsPlot(plotData, legendData, title, saveFile = True)
@@ -83,7 +83,7 @@ for d in subset:
     newIdx += 1  
 legendData =  subDict
 
-title = ['Experiment 3: Q-Learning with Different Discount Factors\n', 'expResults3']
+title = ['Q-Learning with Different Discount Factors\n', 'expResults3']
 
 # plot and save
 diagnosticsPlot(plotData, legendData, title, saveFile = True)
@@ -98,7 +98,7 @@ subDict = {}
 # load and prepare plotting data
 plotData = np.load('results/expResults4.npy')
 plotData = plotData / optimal_route_cost
-plotData = plotData[:,subset] # select results of interest
+plotData = plotData[0:1000,subset] # select results of interest
 smooth = 50; plotData = getWindowAverage(plotData, smooth)
 legendData =  pickle.load( open('results/expParameters4.p', 'rb' ))
 
@@ -109,7 +109,7 @@ for d in subset:
     newIdx += 1  
 legendData =  subDict
 
-title = ['Experiment 4: Q-Learning with Different Decay Rates\n', 'expResults4']
+title = ['Q-Learning with Different Decay Rates\n', 'expResults4ranged']
 
 # plot and save
 diagnosticsPlot(plotData, legendData, title, saveFile = True)
@@ -135,7 +135,7 @@ for d in subset:
     newIdx += 1  
 legendData =  subDict
 
-title = ['Experiment 5a: Optimise Parameters (Learning Rate)\n', 'expResults5a']
+title = ['Optimising Parameters (Learning Rate)\n', 'expResults5a']
 
 # plot and save
 diagnosticsPlot(plotData, legendData, title, saveFile = True)
@@ -160,7 +160,7 @@ for d in subset:
     newIdx += 1  
 legendData =  subDict
 
-title = ['Experiment 5b: Optimise Parameters (Discount Factor)\n', 'expResults5b']
+title = ['Optimising Parameters (Discount Factor)\n', 'expResults5b']
 
 # plot and save
 diagnosticsPlot(plotData, legendData, title, saveFile = True)
@@ -174,7 +174,7 @@ subDict = {}
 # load and prepare plotting data
 plotData = np.load('results/expResults6.npy')
 plotData = plotData / optimal_route_cost
-plotData = plotData[:,subset] # select results of interest
+plotData = plotData[0:500,subset] # select results of interest
 smooth = 50; plotData = getWindowAverage(plotData, smooth)
 legendData =  pickle.load( open('results/expParameters6.p', 'rb' ))
 
@@ -185,7 +185,7 @@ for d in subset:
     newIdx += 1  
 legendData =  subDict
 
-title = ['Experiment 6: Q-Learning with Different Goal State Rewards\n', 'expResults6']
+title = ['Q-Learning with Different Goal State Rewards\n', 'expResults6']
 
 # plot and save
 diagnosticsPlot(plotData, legendData, title, saveFile = True)
