@@ -8,27 +8,22 @@ Created on Sat Mar 25 17:10:03 2017
 
 #%% Select whether to run full plotting script, or just quick plotting script
 
-plotting = False
+plotting = True
 
-#%% Import libraries & functions
+#%% Import library dependancies
 
-# import libraries
 import numpy as np
-
-#from scipy import *
 import matplotlib.pyplot as plt
+from tspFunctions import * # import bespoke TSP functions
 
-# import bespoke TSP functions
-from tspFunctions import *
-
-#%% Load problem environment
+#%% Section One: Load problem environment
 
 distances_file = 'tsp_matrices/toy_d.csv'
 optimal_route_file = 'tsp_matrices/toy_s.csv'
 
 int_R, optimal_route, optimal_route_cost =  loadTSPmatrix(distances_file, optimal_route_file)
 
-#%% Define parameters
+#%% Section Two: Define parameters
 
 epochs = 1000 # init epochs count
 start = 0 # define start point at row 0
@@ -43,7 +38,7 @@ epsilon_decays = np.array([0.3]).astype('float32')
 # define number of sampling runs
 sampling_runs = 1
 
-#%% Q-Learning
+#%% Section Three: Q-Learning
 
 # init variables for recording Q Learning metrics
 seqs = [] # list of lists, where each inner list records the state transitions made in an epoch. State transitions for each epoch in each sampling_run are recorded.
@@ -82,21 +77,8 @@ for a in range(0, np.size(alphas)):
 
 
 #np.save('tspResults', mean_costs_matrix)                
-            
 
-#%% Clear Redundant Variables from workspace
-
-# clear input variables
-del start, epoch, epochs, sampling_runs, goal_state_reward
-
-# clear any variables created solely for 'looping' purposes
-del a, alpha, e, epsilon, g, gamma, d,  epsilon_decay , sampling_run, loop_idx
-
-# clear non-aggregate metrics variables
-del trans_seqs, epoch_costs, costs_matrix, mean_costs
-
-# euler_gamma, pi
-# %% Calculates cost ratio and get window average
+#%% Section Four: Plot Results
 
 # subtract optimal route baseline from cost data
 plotData = mean_costs_matrix/optimal_route_cost
@@ -104,8 +86,6 @@ plotData = mean_costs_matrix/optimal_route_cost
 # convert plotData to a window average of last 20 epochs (for smoothing plots)
 smoothing = 20
 plotData = getWindowAverage(plotData, smoothing) 
-
-#%%  Plot Results
 
 if plotting == False:
     plt.figure(figsize=(15,10))
@@ -132,4 +112,15 @@ if plotting == True:
     # Plot routes
     plotFewRoutes(seqs,file_xy,title)
 
+#%% Clear Redundant Variables from workspace
 
+# clear input variables
+del start, epoch, epochs, sampling_runs, goal_state_reward
+
+# clear any variables created solely for 'looping' purposes
+del a, alpha, e, epsilon, g, gamma, d,  epsilon_decay , sampling_run, loop_idx
+
+# clear non-aggregate metrics variables
+del trans_seqs, epoch_costs, costs_matrix, mean_costs
+
+# euler_gamma, pi

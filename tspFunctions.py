@@ -5,25 +5,15 @@ Created on Thu Mar 30 18:00:36 2017
 @author: Ronan and Miguel
 """
 
-''' e-greedy policy'''
-
 import numpy as np
 import random
 from copy import deepcopy
 import pandas as pd
 
 
-def loadCoordenates(file_name_xy):
-    
-    coordenates = (pd.read_csv(file_name_xy, header=None))*100000
-    coordenates = coordenates.as_matrix().astype('float32')
-    return coordenates
-
+''' e-greedy policy'''
 
 def epsilonGreedy(epsilon, s, Q, A):
-    
-    #import numpy as np
-    #import random
     
     r = np.random.random_sample()
     if r > epsilon:
@@ -39,11 +29,6 @@ def epsilonGreedy(epsilon, s, Q, A):
 
 def qLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_state_reward):
     
-    # import function dependencies
-    #from copy import deepcopy
-    #import numpy as np
-    #from epsilonGreedy import epsilonGreedy
-
     # init in loop NEW
     transition_seqs = []
     total_cost = []
@@ -229,45 +214,7 @@ def doubleQLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goa
     return total_cost, transition_seqs, Q1, Q2
 
 
-
-
 ''' Load TSP Problems Matrix'''
-    
-#def loadTSPmatrix(file_name):
-#    
-#    #import numpy as np
-#    #import pandas as pd
-#    
-#    matrix = pd.read_csv(file_name, header=None)
-#    matrix = matrix.as_matrix().astype('float32')
-#    
-#    dimensions = matrix.shape[0]
-#    
-#    # changes distances to negative values to represent costs
-#    for i in range(0, dimensions):
-#        for j in range(0, dimensions):
-#            matrix[i, j] = 0 - matrix[i, j] 
-#            
-#    # add additional colum and row to array for returning to start state
-#    row = np.array([0]*dimensions)
-#    col = np.array([0]*(dimensions+1))
-#    matrix = np.row_stack((matrix,row)) 
-#    matrix = np.column_stack((matrix,col)) 
-#    
-#    # set 'diagonol' to nan
-#    for i in range(0, dimensions):
-#        matrix[i, i] = np.nan
-#    
-#    # add end row of nan values    
-#    matrix[:,-1] = np.nan
-#    
-#    # set end column to nan
-#    matrix[:,-1] = np.nan
-#
-#    # set end row to nan (with exception of first element)
-#    matrix[-1, 1:-1] = np.nan
-#    
-#    return matrix
     
 def loadTSPmatrix(distances_file, optimal_route_file):
 
@@ -394,3 +341,12 @@ def testParameters(alphas, gammas, epsilons, epsilon_decays,  sampling_runs, epo
                     mean_costs_matrix[:, loop_idx] = mean_costs; loop_idx +=1
                     
     return mean_costs_matrix, seqs, ps_dic
+
+
+'''Load TSP environment Coordinates'''
+
+def loadCoordenates(file_name_xy):
+    
+    coordenates = (pd.read_csv(file_name_xy, header=None))*100000
+    coordenates = coordenates.as_matrix().astype('float32')
+    return coordenates
