@@ -4,6 +4,8 @@ Created on Sat Mar 25 17:10:03 2017
 
 @author: miguel & ronan
 
+Run all Toy environment experiments reported in project write up
+
 """
 
 #%% Import libraries & functions
@@ -17,12 +19,12 @@ import pickle
 
 #%% Define 'Experiments' to run
 
-exp1 = False
-exp2 = False
-exp3 = False
-exp4 = False
-exp5a = False
-exp5b = False
+exp1 = True
+exp2 = True
+exp3 = True
+exp4 = True
+exp5a = True
+exp5b = True
 exp6 = True
 
 #%% Load problem and define parameters
@@ -36,7 +38,7 @@ int_R, optimal_route, optimal_route_cost =  loadTSPmatrix(distances_file, optima
 
 start = 0
 goal_reward = 100
-sampling_runs = 100
+sampling_runs = 1
 
 baseline = optimal_route_cost
 
@@ -158,8 +160,8 @@ if exp4 == True:
     diagnosticsPlot(plotData, legendData, title, saveFile = False)
 
     # save results
-    np.save('results/expResults4', mean_costs_matrix)
-    pickle.dump( parameter_records, open("results/expParameters4.p", "wb" ))                    
+    #np.save('results/expResults4', mean_costs_matrix)
+    #pickle.dump( parameter_records, open("results/expParameters4.p", "wb" ))                    
 
 
 #%% Q-Learning Experiment 5a: Optimise Parameters (learning rate)
@@ -174,7 +176,7 @@ if exp5a == True:
     epochs = 5000
     
     
-    title = ['Experiment 5a: Optimise Parameters (Learning Rate)\n', 'expResults5']
+    title = ['Experiment 5 Part A: Optimise Parameters (Learning Rate)\n', 'expResults5']
     
     # run Q-Learning with specified parameters
     mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
@@ -188,8 +190,8 @@ if exp5a == True:
     diagnosticsPlot(plotData, legendData, title, saveFile = False)
 
     # save results
-    np.save('results/expResults5a', mean_costs_matrix)
-    pickle.dump( parameter_records, open("results/expParameters5a.p", "wb" )) 
+    #np.save('results/expResults5a', mean_costs_matrix)
+    #pickle.dump( parameter_records, open("results/expParameters5a.p", "wb" )) 
 
     
 #%% Q-Learning Experiment 5b: Optimise Parameters (discount factor)
@@ -204,7 +206,7 @@ if exp5b == True:
     epochs = 5000
     
     
-    title = ['Experiment 5b: Optimise Parameters (Discount Factor)\n', 'expResults5b']
+    title = ['Experiment 5 Part B: Optimise Parameters (Discount Factor)\n', 'expResults5b']
     
     # run Q-Learning with specified parameters
     mean_costs_matrix, seqs, parameter_records = testParameters(alphas, gammas, epsilons, epsilon_decays, sampling_runs, epochs, int_R, start, goal_reward)
@@ -218,10 +220,10 @@ if exp5b == True:
     diagnosticsPlot(plotData, legendData, title, saveFile = False)
 
     # save results
-    np.save('results/expResults5b', mean_costs_matrix)
-    pickle.dump( parameter_records, open("results/expParameters5b.p", "wb" ))     
+    #np.save('results/expResults5b', mean_costs_matrix)
+    #pickle.dump( parameter_records, open("results/expParameters5b.p", "wb" ))     
     
-#%% Q-Learning Experiment 6: Change Reward
+#%% Q-Learning Experiment 6: Change Goal State Reward
 
 if exp6 == True:
 
@@ -272,18 +274,10 @@ if exp6 == True:
     diagnosticsPlot(plotData, legendData, title, saveFile = False)
 
     # save results
-    np.save('results/expResults6', trackingMatrix)
-    pickle.dump( legendData, open("results/expParameters6.p", "wb" ))       
+    #np.save('results/expResults6', trackingMatrix)
+    #pickle.dump( legendData, open("results/expParameters6.p", "wb" ))       
 
-#%% Clear Redundant Variables from workspace
 
-''' KEEP AT END OF SCRIPT'''
-
-# clear input variables
-#del start, epochs, sampling_runs, goal_reward
-
-# clear any variables created solely for 'looping' purposes
-#del file_name
 
 
 
