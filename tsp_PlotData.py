@@ -13,24 +13,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tspFunctions import loadCoordenates
 
-def heatmap(grid,a,b):
-      
-    # define font style for axes and title
-    axis_font = {'color':  'black',         
-                    'weight': 500,
-                    'size': 14 }
-    title_font = {'color':  'black',        
-                'weight': 500,
-                'size': 16 }    
-    
-    plt.imshow(grid, interpolation='lanczos', cmap='plasma')
-    plt.title('Grid search of '+ a +' vs '+ b, y=1.05,fontdict=title_font)
-    plt.ylabel(a, fontdict=axis_font)
-    plt.xlabel(b, fontdict=axis_font)
-    
-    plt.show()
-
-
 
 
 def plotFewRoutes(seqs,file_xy,variable):
