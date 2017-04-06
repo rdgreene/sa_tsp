@@ -23,7 +23,7 @@ int_R, optimal_route, optimal_route_cost =  loadTSPmatrix(distances_file, optima
 
 #%% Define parameters
 
-epochs = 1000 # init epochs count
+epochs = 300 # init epochs count
 start = 0 # define start point at row 0
 
 goal_state_reward = 1000
@@ -55,7 +55,7 @@ for a in range(0, np.size(alphas)):
 
                 for sampling_run in range (0, sampling_sampling_runs):
                 
-                    epoch_costs, trans_seqs, _ = qLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_state_reward)
+                    epoch_costs, trans_seqs, Q_matrix = qLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_state_reward)
                     
                     # record all sequences followed in current sampling_run
                     for epoch in range(0, epochs):
@@ -102,12 +102,12 @@ del trans_seqs, epoch_costs, costs_matrix, mean_costs, mean_costs_matrix
 from tsp_PlotData import *
 
 file_xy = 'tsp_matrices/att48_xy.csv'  # file with coordenates
-variable = ['toy environment parameters', 'USA environment optimum parameters']                   # variable to explore
-title = 'Tour in the USA'             # title of graph
+variable = ['USA environment optimum parameters']                   # variable to explore
+title = ['Tour in the USA']             # title of graph
     
 # Plot line graph 
 plotLines(norm_cost,variable,title)
 
 # Plot routes
-#plotManyRoutes(seqs,file_xy,title)
+plotManyRoutes(seqs,file_xy,title)
     
