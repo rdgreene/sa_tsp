@@ -15,29 +15,27 @@ import matplotlib.pyplot as plt
 from tspFunctions import *
 
 #%% Load problem
-
-distances_file = 'tsp_matrices/att48_d.csv'
+distances_file = 'tsp_matrices/att48_d.csv'         # contains distance (cost) values between citites
 optimal_route_file = 'tsp_matrices/att48_s.csv'
 
-int_R, optimal_route, optimal_route_cost =  loadTSPmatrix(distances_file, optimal_route_file)
+int_R, optimal_route, optimal_route_cost =  loadTSPmatrix(distances_file, optimal_route_file)   # based on the environment, creates R matrix, and calculates optimal tour and its cost
 
-#%% Define parameters
-
+# Define parameters
 epochs = 300 # init epochs count
 start = 0 # define start point at row 0
 
 goal_state_reward = 1000
 
-alphas = np.array([0.9]).astype('float32')
-gammas = np.array([0.01]).astype('float32')
-epsilons = np.array([1]).astype('float32')
-epsilon_decays = np.array([0.001]).astype('float32')
+alphas = np.array([0.9]).astype('float32')              # learning rate
+gammas = np.array([0.01]).astype('float32')             # discount rate
+epsilons = np.array([1]).astype('float32')              # epsilon for e-greedy policy
+epsilon_decays = np.array([0.001]).astype('float32')    # epsilon decay after every epoch
 
 sampling_sampling_runs = 20
 
 #%% Q-Learning
 
-# init variables for recording Q Learning metrics
+# initialize variables for recording Q Learning metrics
 seqs = [] # list of lists, where each inner list records the state transitions made in an epoch. State transitions for each epoch in each sampling_run are recorded.
 costs_matrix = np.zeros((epochs, sampling_sampling_runs)) # matrix containing epoch cost vectors for each sampling sampling_run
 mean_costs_matrix = np.zeros((epochs, np.size(alphas)*np.size(gammas)*np.size(epsilons)*np.size(epsilon_decays))) # contains mean of costs for all sampling_runs of each parameter setting
