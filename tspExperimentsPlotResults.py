@@ -98,7 +98,7 @@ subDict = {}
 # load and prepare plotting data
 plotData = np.load('results/expResults4.npy')
 plotData = plotData / optimal_route_cost
-plotData = plotData[0:1000,subset] # select results of interest
+plotData = plotData[:,subset] # select results of interest
 smooth = 50; plotData = getWindowAverage(plotData, smooth)
 legendData =  pickle.load( open('results/expParameters4.p', 'rb' ))
 
@@ -109,7 +109,7 @@ for d in subset:
     newIdx += 1  
 legendData =  subDict
 
-title = ['Q-Learning with Different Decay Rates\n', 'expResults4ranged']
+title = ['Q-Learning with Different Decay Rates\n', 'expResults4']
 
 # plot and save
 diagnosticsPlot(plotData, legendData, title, saveFile = True)
