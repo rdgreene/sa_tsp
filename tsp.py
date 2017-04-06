@@ -72,7 +72,7 @@ for a in range(0, np.size(alphas)):
 
                 for sampling_run in range (0, sampling_sampling_runs):
                 
-                    epoch_costs, trans_seqs, _ = qLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_state_reward)
+                    epoch_costs, trans_seqs, Q_matrix = qLearn(epochs, int_R, start, alpha, gamma, epsilon, epsilon_decay, goal_state_reward)
                     
                     # record all sequences followed in current sampling_run
                     for epoch in range(0, epochs):
